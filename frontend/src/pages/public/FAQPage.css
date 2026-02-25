@@ -1,0 +1,120 @@
+/* ── Page Header ─────────────────────────────────────────── */
+.faq-page-header {
+    padding-top: 160px;
+    padding-bottom: 220px;
+    text-align: center;
+    background-color: #f0fdfa;
+    position: relative;
+}
+
+.faq-page-header .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+}
+
+.faq-page-header .section-subtitle {
+    font-size: 1.05rem;
+    color: #666;
+}
+
+/* ── Content Area ────────────────────────────────────────── */
+.faq-page-content {
+    background: #ffffff;
+    padding: 6rem 0 8rem;
+}
+
+.faq-page-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* ── FAQ List (Flat accordion style) ─────────────────────── */
+.faq-page-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 5rem;
+}
+
+.faq-page-item {
+    background: transparent;
+    border-bottom: 1px solid #eaeaea;
+    overflow: hidden;
+}
+
+.faq-page-question {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    text-align: left;
+    transition: color 0.2s;
+}
+
+.faq-page-item.open .faq-page-question {
+    color: #00897B;
+}
+
+.faq-page-toggle {
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1;
+    color: #1a1a1a;
+    flex-shrink: 0;
+    transition: transform 0.3s ease, color 0.2s;
+}
+
+.faq-page-item.open .faq-page-toggle {
+    color: #00897B;
+}
+
+.faq-page-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.35s ease;
+    padding: 0 1rem;
+}
+
+.faq-page-item.open .faq-page-answer {
+    max-height: 250px;
+    padding: 0 1rem 1.5rem;
+}
+
+.faq-page-answer p {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.75;
+}
+
+/* ── Contact CTA ─────────────────────────────────────────── */
+.faq-contact-cta {
+    text-align: center;
+    padding: 4rem 3rem;
+    background: #f8fafc;
+    border-radius: 20px;
+}
+
+.faq-contact-cta h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 0.75rem;
+}
+
+.faq-contact-cta p {
+    color: #666;
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
+}
