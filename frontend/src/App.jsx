@@ -13,6 +13,10 @@ import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
 import VerifyPasswordPage from './pages/auth/VerifyPasswordPage'
 import UpdatePasswordPage from './pages/auth/UpdatePasswordPage'
 
+import CheckoutPage from './pages/public/CheckoutPage'
+import DestinationDetailsPage from './pages/public/DestinationDetailsPage'
+import HotelDetailsPage from './pages/public/HotelDetailsPage'
+
 // Dashboards
 import TravelerDashboard from './pages/dashboards/TravelerDashboard'
 import AdminDashboard from './pages/dashboards/AdminDashboard'
@@ -31,6 +35,9 @@ const App = () => (
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/terms" element={<TermsPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/destinations/:slug" element={<DestinationDetailsPage />} />
+        <Route path="/hotel/:hotelId" element={<HotelDetailsPage />} />
 
         {/* Auth Pages */}
         <Route path="/signin" element={<LoginPage />} />

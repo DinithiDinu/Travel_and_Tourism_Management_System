@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import './Dashboard.css';
 import { useNavigate } from 'react-router-dom';
 import MyProfile from '../../components/dashboard/MyProfile';
+import PricingEnginePanel from '../../components/dashboard/PricingEnginePanel';
 
 function useScrollReveal() {
     const ref = useRef(null);
@@ -59,6 +60,11 @@ const AdminDashboard = () => {
                         </button>
                     </li>
                     <li>
+                        <button className={activeTab === 'pricing' ? 'active' : ''} onClick={() => setActiveTab('pricing')}>
+                            Pricing Engine
+                        </button>
+                    </li>
+                    <li>
                         <button className={activeTab === 'profile' ? 'active' : ''} onClick={() => setActiveTab('profile')}>
                             Profile Settings
                         </button>
@@ -85,17 +91,17 @@ const AdminDashboard = () => {
                                     <h2 className="panel-title">System Overview</h2>
                                 </div>
                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginBottom: '30px' }}>
-                                    <div style={{ padding: '20px', background: '#f8fafc', borderRadius: '8px', textAlign: 'center' }}>
-                                        <h3 style={{ fontSize: '2rem', color: 'var(--primary-color)' }}>152</h3>
-                                        <p style={{ color: 'var(--text-light)' }}>Total Travelers</p>
+                                    <div style={{ padding: '30px', background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)', borderRadius: '16px', textAlign: 'center', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.02)' }}>
+                                        <h3 style={{ fontSize: '2.5rem', color: 'var(--primary-color)', marginBottom: '5px' }}>152</h3>
+                                        <p style={{ color: '#64748b', fontWeight: '500', fontSize: '0.95rem' }}>Total Travelers</p>
                                     </div>
-                                    <div style={{ padding: '20px', background: '#f8fafc', borderRadius: '8px', textAlign: 'center' }}>
-                                        <h3 style={{ fontSize: '2rem', color: 'var(--primary-color)' }}>48</h3>
-                                        <p style={{ color: 'var(--text-light)' }}>Active Providers</p>
+                                    <div style={{ padding: '30px', background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)', borderRadius: '16px', textAlign: 'center', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.02)' }}>
+                                        <h3 style={{ fontSize: '2.5rem', color: 'var(--primary-color)', marginBottom: '5px' }}>48</h3>
+                                        <p style={{ color: '#64748b', fontWeight: '500', fontSize: '0.95rem' }}>Active Providers</p>
                                     </div>
-                                    <div style={{ padding: '20px', background: '#f8fafc', borderRadius: '8px', textAlign: 'center' }}>
-                                        <h3 style={{ fontSize: '2rem', color: 'var(--primary-color)' }}>$12.4k</h3>
-                                        <p style={{ color: 'var(--text-light)' }}>Monthly Revenue</p>
+                                    <div style={{ padding: '30px', background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)', borderRadius: '16px', textAlign: 'center', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.02)' }}>
+                                        <h3 style={{ fontSize: '2.5rem', color: 'var(--primary-color)', marginBottom: '5px' }}>$12.4k</h3>
+                                        <p style={{ color: '#64748b', fontWeight: '500', fontSize: '0.95rem' }}>Monthly Revenue</p>
                                     </div>
                                 </div>
                             </div>
@@ -130,6 +136,10 @@ const AdminDashboard = () => {
 
                         {activeTab === 'profile' && (
                             <MyProfile />
+                        )}
+
+                        {activeTab === 'pricing' && (
+                            <PricingEnginePanel />
                         )}
                     </section>
                 </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import TopWave from '../../components/layout/TopWave';
@@ -25,6 +25,7 @@ function useScrollReveal() {
 
 const LoginPage = () => {
     const pageRef = useScrollReveal();
+    const navigate = useNavigate();
     const [form, setForm] = useState({ email: '', password: '' });
     const [status, setStatus] = useState('idle');
 
@@ -36,6 +37,30 @@ const LoginPage = () => {
         // TODO: integrate API
         await new Promise(res => setTimeout(res, 1000));
         setStatus('idle');
+
+        let role = 'traveler';
+        let dashRoute = '/dashboard/traveler';
+
+        // Mock backend role resolution
+        if (form.email.includes('admin')) {
+            role = 'admin';
+            dashRoute = '/dashboard/admin';
+        } else if (form.email.includes('provider')) {
+            role = 'provider';
+            dashRoute = '/dashboard/provider';
+        } else if (form.email.includes('rider')) {
+            role = 'rider';
+            dashRoute = '/dashboard/rider';
+        }
+
+        localStorage.setItem('userRole', role);
+
+        // Mock first-login password change requirement
+        if ((role === 'provider' || role === 'rider') && form.password === 'changeme') {
+            navigate('/update-password');
+        } else {
+            navigate(dashRoute);
+        }
     };
 
     return (
@@ -46,6 +71,14 @@ const LoginPage = () => {
                 <div className="container">
                     <h1 className="section-title">Welcome Back</h1>
                     <p className="section-subtitle">Sign in to manage your bookings and explore more.</p>
+                    <div style={{ background: 'rgba(255,255,255,0.1)', padding: '15px', borderRadius: '8px', marginTop: '20px', fontSize: '0.9rem', display: 'inline-block', textAlign: 'left' }}>
+                        <p style={{ margin: '0 0 5px 0', fontWeight: 'bold' }}>Demo Credentials:</p>
+                        <ul style={{ margin: 0, paddingLeft: '20px' }}>
+                            <li><strong>Admin:</strong> admin@test.com</li>
+                            <li><strong>Traveler:</strong> user@test.com</li>
+                            <li><strong>Provider/Rider (First Login):</strong> provider@test.com / rider@test.com (Password: changeme)</li>
+                        </ul>
+                    </div>
                 </div>
                 <div className="wave-container">
                     <TopWave />

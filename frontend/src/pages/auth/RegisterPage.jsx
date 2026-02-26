@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import TopWave from '../../components/layout/TopWave';
@@ -25,6 +25,7 @@ function useScrollReveal() {
 
 const RegisterPage = () => {
     const pageRef = useScrollReveal();
+    const navigate = useNavigate();
     const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
     const [status, setStatus] = useState('idle');
 
@@ -36,6 +37,7 @@ const RegisterPage = () => {
         // TODO: integrate API
         await new Promise(res => setTimeout(res, 1000));
         setStatus('idle');
+        navigate('/checkout');
     };
 
     return (

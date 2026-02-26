@@ -103,14 +103,14 @@ const ProviderDashboard = () => {
                                 <div className="panel-header">
                                     <h2 className="panel-title">Earnings Report</h2>
                                 </div>
-                                <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
-                                    <div style={{ flex: 1, padding: '20px', background: '#f8fafc', borderRadius: '8px' }}>
-                                        <p style={{ color: 'var(--text-light)', marginBottom: '5px' }}>This Week</p>
-                                        <h3 style={{ fontSize: '1.8rem', color: 'var(--primary-color)' }}>$340.00</h3>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px', marginBottom: '20px' }}>
+                                    <div style={{ padding: '30px', background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)', borderRadius: '16px', textAlign: 'center', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.02)' }}>
+                                        <p style={{ color: '#64748b', fontWeight: '500', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '10px' }}>This Week</p>
+                                        <h3 style={{ fontSize: '2.5rem', color: 'var(--primary-color)', margin: '0' }}>$340.00</h3>
                                     </div>
-                                    <div style={{ flex: 1, padding: '20px', background: '#f8fafc', borderRadius: '8px' }}>
-                                        <p style={{ color: 'var(--text-light)', marginBottom: '5px' }}>This Month</p>
-                                        <h3 style={{ fontSize: '1.8rem', color: 'var(--primary-color)' }}>$1,250.00</h3>
+                                    <div style={{ padding: '30px', background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)', borderRadius: '16px', textAlign: 'center', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.02)' }}>
+                                        <p style={{ color: '#64748b', fontWeight: '500', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '10px' }}>This Month</p>
+                                        <h3 style={{ fontSize: '2.5rem', color: 'var(--primary-color)', margin: '0' }}>$1,250.00</h3>
                                     </div>
                                 </div>
                             </div>

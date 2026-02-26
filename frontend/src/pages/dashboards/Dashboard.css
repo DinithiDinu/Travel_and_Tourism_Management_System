@@ -2,18 +2,21 @@
 .dashboard-layout {
     display: flex;
     height: 100vh;
-    background-color: var(--bg-light);
+    background-color: #f1f5f9;
+    /* Soft, premium light background */
     overflow: hidden;
+    font-family: var(--font-body);
 }
 
 /* Sidebar Menu */
 .dashboard-sidebar {
     width: 280px;
     background: var(--white);
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-direction: column;
     z-index: 10;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .sidebar-brand {
@@ -50,33 +53,36 @@
 
 .sidebar-menu li a,
 .sidebar-menu li button {
-    display: block;
-    width: 100%;
+    display: flex;
+    align-items: center;
+    width: calc(100% - 30px);
+    margin: 5px 15px;
     text-align: left;
-    padding: 15px 24px;
-    color: var(--text-color);
+    padding: 12px 20px;
+    color: #475569;
     text-decoration: none;
     font-weight: 500;
     border: none;
     background: none;
     cursor: pointer;
     font-family: inherit;
-    font-size: 1rem;
-    border-left: 4px solid transparent;
-    transition: all 0.2s ease;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    transition: all 0.25s ease;
 }
 
 .sidebar-menu li a:hover,
 .sidebar-menu li button:hover {
     background-color: #f8fafc;
     color: var(--primary-color);
+    transform: translateX(4px);
 }
 
 .sidebar-menu li a.active,
 .sidebar-menu li button.active {
-    background-color: #f0fdfa;
-    color: var(--primary-color);
-    border-left-color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: var(--white);
+    box-shadow: 0 4px 12px rgba(0, 137, 123, 0.25);
 }
 
 .sidebar-menu .logout-item {
@@ -98,6 +104,8 @@
 
 .sidebar-menu .logout-btn:hover {
     background: #fef2f2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
 }
 
 /* Main Content Area */
@@ -109,9 +117,13 @@
 }
 
 .dashboard-topbar {
-    background: var(--white);
-    padding: 30px 40px;
-    border-bottom: 1px solid #e2e8f0;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 25px 40px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 5;
 }
 
 .dashboard-topbar h1 {
@@ -126,20 +138,34 @@
 }
 
 .dashboard-content {
-    padding: 40px;
+    padding: 30px 40px;
     flex: 1;
 }
 
 .dashboard-panel {
     background: var(--white);
-    border-radius: var(--border-radius);
-    padding: 30px;
-    box-shadow: var(--shadow-sm);
+    border-radius: 16px;
+    padding: 35px;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.02);
     min-height: 400px;
+    animation: fadeUp 0.5s ease backwards;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .panel-header {
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 2px solid #f1f5f9;
     padding-bottom: 15px;
     margin-bottom: 25px;
     display: flex;
@@ -149,9 +175,10 @@
 
 .panel-title {
     font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--text-color);
+    font-weight: 700;
+    color: #1e293b;
     margin: 0;
+    letter-spacing: -0.02em;
 }
 
 /* Empty States */
