@@ -13,6 +13,12 @@ import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
 import VerifyPasswordPage from './pages/auth/VerifyPasswordPage'
 import UpdatePasswordPage from './pages/auth/UpdatePasswordPage'
 
+// Dashboards
+import TravelerDashboard from './pages/dashboards/TravelerDashboard'
+import AdminDashboard from './pages/dashboards/AdminDashboard'
+import ProviderDashboard from './pages/dashboards/ProviderDashboard'
+import RiderDashboard from './pages/dashboards/RiderDashboard'
+
 // Layout
 import Navbar from './components/layout/Navbar'
 
@@ -32,6 +38,12 @@ const App = () => (
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/verify-password" element={<VerifyPasswordPage />} />
         <Route path="/update-password" element={<UpdatePasswordPage />} />
+
+        {/* User Dashboards */}
+        <Route path="/dashboard/traveler" element={<TravelerDashboard />} />
+        <Route path="/dashboard/admin" element={<AdminDashboard />} />
+        <Route path="/dashboard/provider" element={<ProviderDashboard />} />
+        <Route path="/dashboard/rider" element={<RiderDashboard />} />
     </Routes>
 )
 

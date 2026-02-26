@@ -1,0 +1,123 @@
+import { useState, useEffect, useRef } from 'react';
+import './Dashboard.css';
+import { useNavigate } from 'react-router-dom';
+import MyProfile from '../../components/dashboard/MyProfile';
+
+function useScrollReveal() {
+    const ref = useRef(null);
+    useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((e) => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('revealed');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        const els = ref.current?.querySelectorAll('.reveal');
+        els?.forEach((el) => observer.observe(el));
+        return () => observer.disconnect();
+    }, []);
+    return ref;
+}
+
+const RiderDashboard = () => {
+    const pageRef = useScrollReveal();
+    const navigate = useNavigate();
+    const [activeTab, setActiveTab] = useState('rides');
+
+    const handleLogout = () => {
+        // TODO: Handle actual logout logic
+        navigate('/signin');
+    };
+
+    return (
+        <div ref={pageRef} className="dashboard-layout">
+            <aside className="dashboard-sidebar">
+                <div className="sidebar-brand">
+                    <h2>SriLankaTravel</h2>
+                    <span className="badge">Rider</span>
+                </div>
+                <ul className="sidebar-menu">
+                    <li>
+                        <button
+                            className={activeTab === 'rides' ? 'active' : ''}
+                            onClick={() => setActiveTab('rides')}
+                        >
+                            My Rides
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            className={activeTab === 'earnings' ? 'active' : ''}
+                            onClick={() => setActiveTab('earnings')}
+                        >
+                            Earnings
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            className={activeTab === 'profile' ? 'active' : ''}
+                            onClick={() => setActiveTab('profile')}
+                        >
+                            Profile Settings
+                        </button>
+                    </li>
+                    <li className="logout-item">
+                        <button className="logout-btn" onClick={handleLogout}>
+                            Logout
+                        </button>
+                    </li>
+                </ul>
+            </aside>
+
+            <main className="dashboard-main">
+                <header className="dashboard-topbar">
+                    <h1>Rider Dashboard</h1>
+                    <p>Manage your upcoming trips, vehicle details, and earnings.</p>
+                </header>
+
+                <div className="dashboard-content reveal">
+                    <section className="dashboard-panel">
+                        {activeTab === 'rides' && (
+                            <div>
+                                <div className="panel-header">
+                                    <h2 className="panel-title">My Rides</h2>
+                                    <button className="btn btn-primary btn-sm">Find Requests</button>
+                                </div>
+                                <div className="empty-state">
+                                    <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🚗</div>
+                                    <p>You have no upcoming rides scheduled.</p>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'earnings' && (
+                            <div>
+                                <div className="panel-header">
+                                    <h2 className="panel-title">Earnings Report</h2>
+                                </div>
+                                <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
+                                    <div style={{ flex: 1, padding: '20px', background: '#f8fafc', borderRadius: '8px' }}>
+                                        <p style={{ color: 'var(--text-light)', marginBottom: '5px' }}>This Week</p>
+                                        <h3 style={{ fontSize: '1.8rem', color: 'var(--primary-color)' }}>$150.00</h3>
+                                    </div>
+                                    <div style={{ flex: 1, padding: '20px', background: '#f8fafc', borderRadius: '8px' }}>
+                                        <p style={{ color: 'var(--text-light)', marginBottom: '5px' }}>This Month</p>
+                                        <h3 style={{ fontSize: '1.8rem', color: 'var(--primary-color)' }}>$600.00</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'profile' && (
+                            <MyProfile />
+                        )}
+                    </section>
+                </div>
+            </main>
+        </div>
+    );
+};
+
+export default RiderDashboard;
