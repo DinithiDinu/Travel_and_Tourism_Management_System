@@ -31,6 +31,24 @@ const RidesServicesPanel = () => {
     const [saving, setSaving] = useState(false);
     const [deleteTarget, setDeleteTarget] = useState(null);
 
+    // Pre-load riders + requests so FK dropdowns always have options
+    useEffect(() => {
+        const preload = async () => {
+            try {
+                const [riders, requests] = await Promise.all([
+                    api.get('/rides/riders'),
+                    api.get('/rides/requests'),
+                ]);
+                setData(prev => ({
+                    ...prev,
+                    riders: riders || [],
+                    requests: requests || [],
+                }));
+            } catch (_) {}
+        };
+        preload();
+    }, []);
+
     const urls = {
         requests: { list: '/rides/requests', create: '/rides/requests', update: id => `/rides/requests/${id}`, del: id => `/rides/requests/${id}` },
         rides: { list: '/rides', create: '/rides/start', del: id => `/rides/${id}`, complete: id => `/rides/${id}/complete` },
@@ -57,11 +75,25 @@ const RidesServicesPanel = () => {
     const openCreate = () => { setForm({ ...blankForms[tab] }); setModal({ mode: 'create' }); };
     const openEdit = (item) => { setForm({ ...item }); setModal({ mode: 'edit', item }); };
 
+    // Cast numeric FK fields so they are sent as numbers, not strings
+    const prepareForm = (f) => {
+        const numericFields = ['userId', 'riderId', 'requestId', 'year', 'capacity', 'numberOfPeople', 'yearsExperience'];
+        const out = { ...f };
+        numericFields.forEach(k => {
+            if (out[k] !== '' && out[k] !== null && out[k] !== undefined) {
+                const n = Number(out[k]);
+                if (!isNaN(n)) out[k] = n;
+            }
+        });
+        return out;
+    };
+
     const handleSave = async (e) => {
         e.preventDefault(); setSaving(true);
         try {
-            if (modal.mode === 'create') await api.post(cfg.create, form);
-            else await api.put(cfg.update(modal.item[idKey]), form);
+            const payload = prepareForm(form);
+            if (modal.mode === 'create') await api.post(cfg.create, payload);
+            else await api.put(cfg.update(modal.item[idKey]), payload);
             await load(tab); setModal(null);
         } catch (e) { alert('Error: ' + e.message); }
         finally { setSaving(false); }
@@ -92,12 +124,65 @@ const RidesServicesPanel = () => {
         </div>
     );
 
+    // Dropdown populated from real DB records (for FK fields)
+    const fkSelect = (field, label, options) => (
+        <div className="fp-form-group" key={field}>
+            <label>{label}</label>
+            <select
+                value={form[field] ?? ''}
+                onChange={e => setForm(p => ({ ...p, [field]: e.target.value }))}
+                required
+            >
+                <option value="">— select —</option>
+                {options.map(o => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+            </select>
+        </div>
+    );
+
+    const riderOpts = (data.riders || []).map(r => ({ value: r.riderId, label: `#${r.riderId} – ${r.name || 'Rider'}` }));
+    const requestOpts = (data.requests || []).map(r => ({ value: r.requestId, label: `#${r.requestId} – ${r.serviceType || ''} (${r.status || ''})` }));
+
     const formFields = () => {
-        if (tab === 'requests') return [formField('userId', 'User ID', 'number'), formField('serviceType', 'Service Type', 'text', ['RIDE', 'TOUR_GUIDE', 'HOTEL']), formField('pickupLocation', 'Pickup Location'), formField('dropoffLocation', 'Dropoff Location'), formField('requestedDateTime', 'Date & Time', 'datetime-local'), formField('numberOfPeople', 'People', 'number'), formField('notes', 'Notes', 'textarea')];
-        if (tab === 'rides') return [formField('riderId', 'Rider ID', 'number'), formField('requestId', 'Request ID', 'number')];
-        if (tab === 'riders') return [formField('name', 'Name'), formField('licenseNumber', 'License #'), formField('phone', 'Phone'), formField('vehicleType', 'Vehicle Type'), formField('yearsExperience', 'Experience (yrs)', 'number'), formField('status', 'Status', 'text', ['AVAILABLE', 'ON_RIDE', 'OFFLINE'])];
-        if (tab === 'vehicles') return [formField('riderId', 'Rider ID', 'number'), formField('vehicleNumber', 'Vehicle No.'), formField('vehicleType', 'Type', 'text', ['CAR', 'VAN', 'BIKE', 'BUS']), formField('model', 'Model'), formField('year', 'Year', 'number'), formField('capacity', 'Capacity', 'number'), formField('status', 'Status', 'text', ['AVAILABLE', 'IN_USE', 'MAINTENANCE'])];
-        if (tab === 'providers') return [formField('name', 'Provider Name'), formField('serviceType', 'Service Type'), formField('contactEmail', 'Email', 'email'), formField('phone', 'Phone'), formField('address', 'Address'), formField('status', 'Status', 'text', ['ACTIVE', 'INACTIVE', 'SUSPENDED'])];
+        if (tab === 'requests') return [
+            formField('userId', 'User ID', 'number'),
+            formField('serviceType', 'Service Type', 'text', ['RIDE', 'TOUR_GUIDE', 'HOTEL']),
+            formField('pickupLocation', 'Pickup Location'),
+            formField('dropoffLocation', 'Dropoff Location'),
+            formField('requestedDateTime', 'Date & Time', 'datetime-local'),
+            formField('numberOfPeople', 'People', 'number'),
+            formField('notes', 'Notes', 'textarea'),
+        ];
+        if (tab === 'rides') return [
+            fkSelect('riderId', 'Rider', riderOpts),
+            fkSelect('requestId', 'Service Request', requestOpts),
+        ];
+        if (tab === 'riders') return [
+            formField('name', 'Name'),
+            formField('licenseNumber', 'License #'),
+            formField('phone', 'Phone'),
+            formField('vehicleType', 'Vehicle Type'),
+            formField('yearsExperience', 'Experience (yrs)', 'number'),
+            formField('status', 'Status', 'text', ['AVAILABLE', 'ON_RIDE', 'OFFLINE']),
+        ];
+        if (tab === 'vehicles') return [
+            fkSelect('riderId', 'Rider', riderOpts),
+            formField('vehicleNumber', 'Vehicle No.'),
+            formField('vehicleType', 'Type', 'text', ['CAR', 'VAN', 'BIKE', 'BUS']),
+            formField('model', 'Model'),
+            formField('year', 'Year', 'number'),
+            formField('capacity', 'Capacity', 'number'),
+            formField('status', 'Status', 'text', ['AVAILABLE', 'IN_USE', 'MAINTENANCE']),
+        ];
+        if (tab === 'providers') return [
+            formField('name', 'Provider Name'),
+            formField('serviceType', 'Service Type'),
+            formField('contactEmail', 'Email', 'email'),
+            formField('phone', 'Phone'),
+            formField('address', 'Address'),
+            formField('status', 'Status', 'text', ['ACTIVE', 'INACTIVE', 'SUSPENDED']),
+        ];
     };
 
     const renderRow = (item) => {

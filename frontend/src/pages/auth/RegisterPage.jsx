@@ -2,19 +2,55 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Auth.css';
 
+const BASE = 'http://localhost:8081/api';
+
 const RegisterPage = () => {
     const navigate = useNavigate();
     const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
     const [status, setStatus] = useState('idle');
+    const [error, setError] = useState('');
 
     const handleChange = (e) => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
+        if (form.password !== form.confirmPassword) {
+            setError('Passwords do not match.');
+            return;
+        }
         setStatus('sending');
-        await new Promise(res => setTimeout(res, 1000));
-        setStatus('idle');
-        navigate('/dashboard/traveler');
+        try {
+            const res = await fetch(`${BASE}/auth/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    fullName: form.name,
+                    email: form.email,
+                    password: form.password,
+                    role: 'TRAVELER',
+                }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Registration failed');
+
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userId', data.userId);
+            localStorage.setItem('userRole', data.role?.toLowerCase());
+            localStorage.setItem('userName', data.fullName);
+
+            const roleRoutes = {
+                ADMIN: '/dashboard/admin',
+                TRAVELER: '/dashboard/traveler',
+                GUIDE: '/dashboard/traveler',
+                RIDER: '/dashboard/rider',
+                SERVICE_PROVIDER: '/dashboard/provider',
+            };
+            navigate(roleRoutes[data.role] || '/dashboard/traveler');
+        } catch (err) {
+            setError(err.message);
+            setStatus('idle');
+        }
     };
 
     return (
@@ -61,6 +97,7 @@ const RegisterPage = () => {
                             <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••"
                                 value={form.confirmPassword} onChange={handleChange} required disabled={status === 'sending'} />
                         </div>
+                        {error && <p style={{ color: '#e53e3e', marginBottom: '0.75rem', fontSize: '0.875rem' }}>{error}</p>}
                         <button type="submit" className="btn-submit" disabled={status === 'sending'}>
                             {status === 'sending' ? 'Creating Account…' : 'Create Account →'}
                         </button>

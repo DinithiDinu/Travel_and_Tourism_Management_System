@@ -12,6 +12,7 @@ com\tourism\user\entity\User.class
 com\tourism\user\entity\Member.class
 com\tourism\booking\entity\TripCategory.class
 com\tourism\auth\entity\Role.class
+com\tourism\common\exception\GlobalExceptionHandler.class
 com\tourism\booking\entity\Trip.class
 com\tourism\booking\repository\TripRepository.class
 com\tourism\pricing\repository\TourPackageRepository.class

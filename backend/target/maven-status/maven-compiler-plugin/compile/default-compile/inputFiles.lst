@@ -70,6 +70,7 @@ C:\Users\Tiran's PC\Downloads\Travel_and_Tourism_Management_System-main\Travel_a
 C:\Users\Tiran's PC\Downloads\Travel_and_Tourism_Management_System-main\Travel_and_Tourism_Management_System-main\backend\src\main\java\com\tourism\guide\repository\TrainingRecommendationRepository.java
 C:\Users\Tiran's PC\Downloads\Travel_and_Tourism_Management_System-main\Travel_and_Tourism_Management_System-main\backend\src\main\java\com\tourism\finance\service\FinanceService.java
 C:\Users\Tiran's PC\Downloads\Travel_and_Tourism_Management_System-main\Travel_and_Tourism_Management_System-main\backend\src\main\java\com\tourism\auth\service\AuthService.java
+C:\Users\Tiran's PC\Downloads\Travel_and_Tourism_Management_System-main\Travel_and_Tourism_Management_System-main\backend\src\main\java\com\tourism\common\exception\GlobalExceptionHandler.java
 C:\Users\Tiran's PC\Downloads\Travel_and_Tourism_Management_System-main\Travel_and_Tourism_Management_System-main\backend\src\main\java\com\tourism\rides\repository\RideRepository.java
 C:\Users\Tiran's PC\Downloads\Travel_and_Tourism_Management_System-main\Travel_and_Tourism_Management_System-main\backend\src\main\java\com\tourism\finance\entity\Revenue.java
 C:\Users\Tiran's PC\Downloads\Travel_and_Tourism_Management_System-main\Travel_and_Tourism_Management_System-main\backend\src\main\java\com\tourism\pricing\entity\DiscountCategory.java

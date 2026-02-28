@@ -1,37 +1,46 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Auth.css';
+
+const BASE = 'http://localhost:8081/api';
 
 const LoginPage = () => {
     const navigate = useNavigate();
     const [form, setForm] = useState({ email: '', password: '' });
     const [status, setStatus] = useState('idle');
+    const [error, setError] = useState('');
 
     const handleChange = (e) => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
         setStatus('sending');
-        await new Promise(res => setTimeout(res, 1000));
-        setStatus('idle');
+        try {
+            const res = await fetch(`${BASE}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: form.email, password: form.password }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Login failed');
 
-        let role = 'traveler';
-        let dashRoute = '/dashboard/traveler';
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userId', data.userId);
+            localStorage.setItem('userRole', data.role?.toLowerCase());
+            localStorage.setItem('userName', data.fullName);
 
-        if (form.email.includes('admin')) {
-            role = 'admin'; dashRoute = '/dashboard/admin';
-        } else if (form.email.includes('provider')) {
-            role = 'provider'; dashRoute = '/dashboard/provider';
-        } else if (form.email.includes('rider')) {
-            role = 'rider'; dashRoute = '/dashboard/rider';
-        }
-
-        localStorage.setItem('userRole', role);
-
-        if ((role === 'provider' || role === 'rider') && form.password === 'changeme') {
-            navigate('/update-password');
-        } else {
-            navigate(dashRoute);
+            const roleRoutes = {
+                ADMIN: '/dashboard/admin',
+                TRAVELER: '/dashboard/traveler',
+                GUIDE: '/dashboard/traveler',
+                RIDER: '/dashboard/rider',
+                SERVICE_PROVIDER: '/dashboard/provider',
+            };
+            navigate(roleRoutes[data.role] || '/dashboard/traveler');
+        } catch (err) {
+            setError(err.message);
+            setStatus('idle');
         }
     };
 
@@ -59,11 +68,12 @@ const LoginPage = () => {
                     </div>
 
                     <div className="demo-creds">
-                        <p>Demo Credentials</p>
+                        <p>Demo Credentials <span style={{fontWeight:'normal'}}>(password: <code>password123</code>)</span></p>
                         <ul>
-                            <li><strong>Admin:</strong> admin@test.com</li>
-                            <li><strong>Traveler:</strong> user@test.com</li>
-                            <li><strong>Provider / Rider:</strong> provider@test.com (pw: changeme)</li>
+                            <li><strong>Admin:</strong> nimal.admin@tourism.lk</li>
+                            <li><strong>Traveler:</strong> amal.perera@tourism.lk</li>
+                            <li><strong>Rider:</strong> kasun.rider@tourism.lk</li>
+                            <li><strong>Provider:</strong> priya.provider@tourism.lk</li>
                         </ul>
                     </div>
 
@@ -81,6 +91,7 @@ const LoginPage = () => {
                         <div className="form-actions">
                             <Link to="/forgot-password" className="forgot-link">Forgot password?</Link>
                         </div>
+                        {error && <p style={{ color: '#e53e3e', marginBottom: '0.75rem', fontSize: '0.875rem' }}>{error}</p>}
                         <button type="submit" className="btn-submit" disabled={status === 'sending'}>
                             {status === 'sending' ? 'Signing In…' : 'Sign In →'}
                         </button>
