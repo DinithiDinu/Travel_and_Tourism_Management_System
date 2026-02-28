@@ -1,101 +1,74 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from '../../components/layout/Navbar';
-import Footer from '../../components/layout/Footer';
-import TopWave from '../../components/layout/TopWave';
 import './Auth.css';
 
-function useScrollReveal() {
-    const ref = useRef(null);
-    useEffect(() => {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((e) => {
-                if (e.isIntersecting) {
-                    e.target.classList.add('revealed');
-                    observer.unobserve(e.target);
-                }
-            });
-        }, { threshold: 0.1 });
-        const els = ref.current?.querySelectorAll('.reveal');
-        els?.forEach((el) => observer.observe(el));
-        return () => observer.disconnect();
-    }, []);
-    return ref;
-}
-
 const ForgotPasswordPage = () => {
-    const pageRef = useScrollReveal();
     const [email, setEmail] = useState('');
-    const [status, setStatus] = useState('idle'); // idle | sending | sent
+    const [status, setStatus] = useState('idle');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('sending');
-        // TODO: call API to send password reset email
         await new Promise(res => setTimeout(res, 1000));
         setStatus('sent');
     };
 
     return (
-        <div ref={pageRef} className="auth-page">
-            <Navbar badge="Guest" />
-
-            <header className="auth-header section">
-                <div className="container">
-                    <h1 className="section-title">Forgot Password</h1>
-                    <p className="section-subtitle">We will send you a code to reset your password.</p>
+        <div className="auth-page">
+            {/* Left Photo Panel */}
+            <div className="auth-photo-panel">
+                <img src="/assets/Ella.jpg" alt="Ella, Sri Lanka" />
+                <div className="auth-photo-overlay" />
+                <div className="auth-photo-content">
+                    <Link to="/" className="auth-photo-logo">SriLanka<span>Travel</span></Link>
+                    <div className="auth-photo-quote">
+                        <p>"Every journey begins with a single step. We're here to make every step unforgettable."</p>
+                        <cite>— SriLanka Travel</cite>
+                    </div>
                 </div>
-                <div className="wave-container">
-                    <TopWave />
-                </div>
-            </header>
+            </div>
 
-            <section className="auth-section section">
-                <div className="container">
-                    <div className="auth-card reveal">
-                        {status === 'sent' ? (
-                            <div className="success-message" style={{ textAlign: 'center' }}>
-                                <div className="success-icon" style={{ fontSize: '3rem', color: 'var(--primary)', marginBottom: '1rem' }}>✉️</div>
-                                <h2>Check Your Email</h2>
-                                <p>If an account exists for {email}, we have sent a password reset OTP.</p>
-                                <Link to="/verify-password" className="btn-submit" style={{ display: 'block', textDecoration: 'none', marginTop: '20px' }}>
-                                    Enter OTP
-                                </Link>
+            {/* Right Form Panel */}
+            <div className="auth-form-panel">
+                <div className="auth-form-inner">
+                    {status === 'sent' ? (
+                        <div style={{ textAlign: 'center', padding: '2rem 0' }}>
+                            <div style={{ fontSize: '3.5rem', marginBottom: '1.5rem' }}>✉️</div>
+                            <h1 style={{ fontSize: '1.8rem', marginBottom: '0.75rem' }}>Check Your Email</h1>
+                            <p style={{ color: '#64748b', marginBottom: '2rem', lineHeight: '1.7' }}>
+                                If an account exists for <strong>{email}</strong>, we've sent a password reset OTP.
+                            </p>
+                            <Link to="/verify-password" className="btn-submit" style={{ display: 'block', textDecoration: 'none', textAlign: 'center' }}>
+                                Enter OTP →
+                            </Link>
+                            <div className="auth-footer">
+                                <p>Remember your password? <Link to="/signin" className="auth-link">Sign In</Link></p>
                             </div>
-                        ) : (
+                        </div>
+                    ) : (
+                        <>
+                            <div className="auth-form-header">
+                                <h1>Forgot Password 🔐</h1>
+                                <p>We'll send you a code to reset your password.</p>
+                            </div>
                             <form onSubmit={handleSubmit} noValidate>
                                 <div className="form-group">
                                     <label htmlFor="email">Email Address</label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        placeholder="you@example.com"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        required
-                                        disabled={status === 'sending'}
-                                    />
+                                    <input type="email" id="email" name="email" placeholder="you@example.com"
+                                        value={email} onChange={(e) => setEmail(e.target.value)}
+                                        required disabled={status === 'sending'} />
                                 </div>
-
-                                <button
-                                    type="submit"
-                                    className="btn-submit"
-                                    disabled={status === 'sending' || !email}
-                                >
-                                    {status === 'sending' ? 'Sending...' : 'Send Reset Link'}
+                                <button type="submit" className="btn-submit" disabled={status === 'sending' || !email}>
+                                    {status === 'sending' ? 'Sending…' : 'Send Reset Link →'}
                                 </button>
                             </form>
-                        )}
-
-                        <div className="auth-footer">
-                            <p>Remember your password? <Link to="/signin" className="auth-link">Sign In</Link></p>
-                        </div>
-                    </div>
+                            <div className="auth-footer">
+                                <p>Remember your password? <Link to="/signin" className="auth-link">Sign In</Link></p>
+                            </div>
+                        </>
+                    )}
                 </div>
-            </section>
-
-            <Footer />
+            </div>
         </div>
     );
 };

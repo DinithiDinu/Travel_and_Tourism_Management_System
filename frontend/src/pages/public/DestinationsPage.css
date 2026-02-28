@@ -1,22 +1,41 @@
 /* ══ Page Header ════════════════════════════════════════════ */
 .page-header {
+    position: relative;
     padding-top: 160px;
     padding-bottom: 220px;
     text-align: center;
-    background-color: #f0fdfa;
+    background: linear-gradient(160deg, #0f172a 0%, #1e293b 60%, #0f172a 100%);
+    overflow: hidden;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 40%, rgba(13, 148, 136, 0.18) 0%, transparent 65%),
+        radial-gradient(ellipse at 70% 60%, rgba(217, 119, 6, 0.12) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.page-header .section-label {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fcd34d;
 }
 
 .page-header .section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 0.5rem;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.03em;
 }
 
 .page-header .section-subtitle {
     font-size: 1.05rem;
-    color: #666;
+    color: rgba(255, 255, 255, 0.65);
+    max-width: 520px;
+    margin: 0 auto;
 }
 
 /* ══ Carousel Viewport ══════════════════════════════════════ */

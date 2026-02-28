@@ -15,10 +15,7 @@ function useScrollReveal() {
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((e) => {
-                if (e.isIntersecting) {
-                    e.target.classList.add('revealed');
-                    observer.unobserve(e.target);
-                }
+                if (e.isIntersecting) { e.target.classList.add('revealed'); observer.unobserve(e.target); }
             });
         }, { threshold: 0.1 });
         const els = ref.current?.querySelectorAll('.reveal');
@@ -27,6 +24,15 @@ function useScrollReveal() {
     }, []);
     return ref;
 }
+
+const NAV_ITEMS = [
+    { id: 'bookings', icon: '🧳', label: 'My Bookings' },
+    { id: 'destinations', icon: '🗺️', label: 'Explore Destinations' },
+    { id: 'favorites', icon: '❤️', label: 'Saved Destinations' },
+    { id: 'rewards', icon: '🏆', label: 'Rewards & Loyalty' },
+    { id: 'profile', icon: '👤', label: 'Profile Settings' },
+    { id: 'payments', icon: '💳', label: 'Billing & Payments' },
+];
 
 const TravelerDashboard = () => {
     const pageRef = useScrollReveal();
@@ -37,7 +43,6 @@ const TravelerDashboard = () => {
     const [isCheckoutActive, setIsCheckoutActive] = useState(false);
     const [savedDestinations, setSavedDestinations] = useState([]);
 
-    // Reset sub-navigation when switching primary tabs
     const handleTabChange = (tabId) => {
         setActiveTab(tabId);
         if (tabId !== 'destinations') {
@@ -51,81 +56,41 @@ const TravelerDashboard = () => {
         setIsCheckoutActive(false);
         setSelectedHotel(null);
         setSelectedDestination(null);
-        setActiveTab('bookings'); // Simulate a redirect to the bookings page internally
+        setActiveTab('bookings');
     };
 
     const handleToggleSave = (slug) => {
         setSavedDestinations(prev =>
-            prev.includes(slug)
-                ? prev.filter(d => d !== slug)
-                : [...prev, slug]
+            prev.includes(slug) ? prev.filter(d => d !== slug) : [...prev, slug]
         );
     };
 
-    const handleLogout = () => {
-        // TODO: Handle actual logout logic
-        navigate('/signin');
-    };
+    const handleLogout = () => navigate('/signin');
+
+    const activeLabel = NAV_ITEMS.find(n => n.id === activeTab)?.label || 'Dashboard';
 
     return (
         <div ref={pageRef} className="dashboard-layout">
             <aside className="dashboard-sidebar">
                 <div className="sidebar-brand">
-                    <h2>SriLankaTravel</h2>
+                    <h2>SriLanka<span>Travel</span></h2>
                     <span className="badge">Traveler</span>
                 </div>
                 <ul className="sidebar-menu">
-                    <li>
-                        <button
-                            className={activeTab === 'bookings' ? 'active' : ''}
-                            onClick={() => handleTabChange('bookings')}
-                        >
-                            My Bookings
-                        </button>
-                    </li>
-                    <li>
-                        <button
-                            className={activeTab === 'destinations' ? 'active' : ''}
-                            onClick={() => handleTabChange('destinations')}
-                        >
-                            Explore Destinations
-                        </button>
-                    </li>
-                    <li>
-                        <button
-                            className={activeTab === 'favorites' ? 'active' : ''}
-                            onClick={() => handleTabChange('favorites')}
-                        >
-                            Saved Destinations
-                        </button>
-                    </li>
-                    <li>
-                        <button
-                            className={activeTab === 'rewards' ? 'active' : ''}
-                            onClick={() => handleTabChange('rewards')}
-                        >
-                            Rewards & Loyalty
-                        </button>
-                    </li>
-                    <li>
-                        <button
-                            className={activeTab === 'profile' ? 'active' : ''}
-                            onClick={() => handleTabChange('profile')}
-                        >
-                            Profile Settings
-                        </button>
-                    </li>
-                    <li>
-                        <button
-                            className={activeTab === 'payments' ? 'active' : ''}
-                            onClick={() => handleTabChange('payments')}
-                        >
-                            Billing & Payments
-                        </button>
-                    </li>
+                    {NAV_ITEMS.map(({ id, icon, label }) => (
+                        <li key={id}>
+                            <button
+                                className={activeTab === id ? 'active' : ''}
+                                onClick={() => handleTabChange(id)}
+                            >
+                                <span className="nav-icon">{icon}</span>
+                                {label}
+                            </button>
+                        </li>
+                    ))}
                     <li className="logout-item">
                         <button className="logout-btn" onClick={handleLogout}>
-                            Logout
+                            <span className="nav-icon">🚪</span> Logout
                         </button>
                     </li>
                 </ul>
@@ -133,8 +98,13 @@ const TravelerDashboard = () => {
 
             <main className="dashboard-main">
                 <header className="dashboard-topbar">
-                    <h1>Traveler Dashboard</h1>
-                    <p>Manage your upcoming trips and personal details.</p>
+                    <div className="dashboard-topbar-left">
+                        <h1>{activeLabel}</h1>
+                        <p>Manage your upcoming trips and personal details.</p>
+                    </div>
+                    <div className="dashboard-avatar" title="My Profile" onClick={() => handleTabChange('profile')}>
+                        TU
+                    </div>
                 </header>
 
                 <div className="dashboard-content reveal">
@@ -143,12 +113,14 @@ const TravelerDashboard = () => {
                             <div>
                                 <div className="panel-header">
                                     <h2 className="panel-title">My Bookings</h2>
-                                    <button className="btn btn-primary btn-sm" onClick={() => handleTabChange('destinations')}>New Trip</button>
+                                    <button className="btn btn-primary btn-sm" onClick={() => handleTabChange('destinations')}>+ New Trip</button>
                                 </div>
                                 <div className="empty-state">
-                                    <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🧳</div>
-                                    <p>You have no upcoming trips.</p>
-                                    <button className="btn btn-outline" onClick={() => handleTabChange('destinations')}>Explore Destinations</button>
+                                    <div className="empty-icon">🧳</div>
+                                    <p>You have no upcoming trips yet.<br />Start exploring and plan your dream Sri Lanka adventure!</p>
+                                    <button className="btn btn-outline-dark" onClick={() => handleTabChange('destinations')}>
+                                        Explore Destinations →
+                                    </button>
                                 </div>
                             </div>
                         )}
@@ -156,29 +128,13 @@ const TravelerDashboard = () => {
                         {activeTab === 'destinations' && (
                             <div>
                                 {isCheckoutActive && selectedHotel ? (
-                                    <TravelerCheckoutPanel
-                                        hotelId={selectedHotel}
-                                        onBack={() => setIsCheckoutActive(false)}
-                                        onCheckoutComplete={handleCheckoutComplete}
-                                    />
+                                    <TravelerCheckoutPanel hotelId={selectedHotel} onBack={() => setIsCheckoutActive(false)} onCheckoutComplete={handleCheckoutComplete} />
                                 ) : selectedHotel ? (
-                                    <TravelerHotelDetailsPanel
-                                        hotelId={selectedHotel}
-                                        onBack={() => setSelectedHotel(null)}
-                                        onBookNow={() => setIsCheckoutActive(true)}
-                                    />
+                                    <TravelerHotelDetailsPanel hotelId={selectedHotel} onBack={() => setSelectedHotel(null)} onBookNow={() => setIsCheckoutActive(true)} />
                                 ) : selectedDestination ? (
-                                    <TravelerDestinationDetailsPanel
-                                        destinationSlug={selectedDestination}
-                                        onBack={() => setSelectedDestination(null)}
-                                        onHotelSelect={(hotelId) => setSelectedHotel(hotelId)}
-                                    />
+                                    <TravelerDestinationDetailsPanel destinationSlug={selectedDestination} onBack={() => setSelectedDestination(null)} onHotelSelect={(hotelId) => setSelectedHotel(hotelId)} />
                                 ) : (
-                                    <TravelerDestinationsPanel
-                                        onExplore={(slug) => setSelectedDestination(slug)}
-                                        savedDestinations={savedDestinations}
-                                        onToggleSave={handleToggleSave}
-                                    />
+                                    <TravelerDestinationsPanel onExplore={(slug) => setSelectedDestination(slug)} savedDestinations={savedDestinations} onToggleSave={handleToggleSave} />
                                 )}
                             </div>
                         )}
@@ -186,38 +142,18 @@ const TravelerDashboard = () => {
                         {activeTab === 'favorites' && (
                             <div>
                                 {selectedHotel ? (
-                                    <TravelerHotelDetailsPanel
-                                        hotelId={selectedHotel}
-                                        onBack={() => setSelectedHotel(null)}
-                                        onBookNow={() => setIsCheckoutActive(true)}
-                                    />
+                                    <TravelerHotelDetailsPanel hotelId={selectedHotel} onBack={() => setSelectedHotel(null)} onBookNow={() => setIsCheckoutActive(true)} />
                                 ) : selectedDestination ? (
-                                    <TravelerDestinationDetailsPanel
-                                        destinationSlug={selectedDestination}
-                                        onBack={() => setSelectedDestination(null)}
-                                        onHotelSelect={(hotelId) => setSelectedHotel(hotelId)}
-                                    />
+                                    <TravelerDestinationDetailsPanel destinationSlug={selectedDestination} onBack={() => setSelectedDestination(null)} onHotelSelect={(hotelId) => setSelectedHotel(hotelId)} />
                                 ) : (
-                                    <TravelerSavedDestinationsPanel
-                                        savedDestinations={savedDestinations}
-                                        onExplore={(slug) => setSelectedDestination(slug)}
-                                        onToggleSave={handleToggleSave}
-                                    />
+                                    <TravelerSavedDestinationsPanel savedDestinations={savedDestinations} onExplore={(slug) => setSelectedDestination(slug)} onToggleSave={handleToggleSave} />
                                 )}
                             </div>
                         )}
 
-                        {activeTab === 'profile' && (
-                            <MyProfile />
-                        )}
-
-                        {activeTab === 'payments' && (
-                            <TravelerPaymentsPanel />
-                        )}
-
-                        {activeTab === 'rewards' && (
-                            <RewardsPanel />
-                        )}
+                        {activeTab === 'profile' && <MyProfile />}
+                        {activeTab === 'payments' && <TravelerPaymentsPanel />}
+                        {activeTab === 'rewards' && <RewardsPanel />}
                     </section>
                 </div>
             </main>

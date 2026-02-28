@@ -35,37 +35,24 @@ const RiderDashboard = () => {
         <div ref={pageRef} className="dashboard-layout">
             <aside className="dashboard-sidebar">
                 <div className="sidebar-brand">
-                    <h2>SriLankaTravel</h2>
+                    <h2>SriLanka<span>Travel</span></h2>
                     <span className="badge">Rider</span>
                 </div>
                 <ul className="sidebar-menu">
-                    <li>
-                        <button
-                            className={activeTab === 'rides' ? 'active' : ''}
-                            onClick={() => setActiveTab('rides')}
-                        >
-                            My Rides
-                        </button>
-                    </li>
-                    <li>
-                        <button
-                            className={activeTab === 'earnings' ? 'active' : ''}
-                            onClick={() => setActiveTab('earnings')}
-                        >
-                            Earnings
-                        </button>
-                    </li>
-                    <li>
-                        <button
-                            className={activeTab === 'profile' ? 'active' : ''}
-                            onClick={() => setActiveTab('profile')}
-                        >
-                            Profile Settings
-                        </button>
-                    </li>
+                    {[
+                        { id: 'rides', icon: '🚗', label: 'My Rides' },
+                        { id: 'earnings', icon: '💵', label: 'Earnings' },
+                        { id: 'profile', icon: '👤', label: 'Profile Settings' },
+                    ].map(({ id, icon, label }) => (
+                        <li key={id}>
+                            <button className={activeTab === id ? 'active' : ''} onClick={() => setActiveTab(id)}>
+                                <span className="nav-icon">{icon}</span>{label}
+                            </button>
+                        </li>
+                    ))}
                     <li className="logout-item">
                         <button className="logout-btn" onClick={handleLogout}>
-                            Logout
+                            <span className="nav-icon">🚪</span> Logout
                         </button>
                     </li>
                 </ul>
@@ -73,8 +60,11 @@ const RiderDashboard = () => {
 
             <main className="dashboard-main">
                 <header className="dashboard-topbar">
-                    <h1>Rider Dashboard</h1>
-                    <p>Manage your upcoming trips, vehicle details, and earnings.</p>
+                    <div className="dashboard-topbar-left">
+                        <h1>Rider Dashboard</h1>
+                        <p>Manage your upcoming trips, vehicle details, and earnings.</p>
+                    </div>
+                    <div className="dashboard-avatar" title="Rider Profile">RD</div>
                 </header>
 
                 <div className="dashboard-content reveal">
