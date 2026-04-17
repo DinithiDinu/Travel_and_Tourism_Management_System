@@ -1,0 +1,320 @@
+/* ══ Dashboard Layout ═════════════════════════════════════════ */
+.dashboard-layout {
+    display: flex;
+    height: 100vh;
+    background: #f1f5f9;
+    overflow: hidden;
+    font-family: var(--font-body, 'Inter', sans-serif);
+}
+
+/* ── Sidebar ── */
+.dashboard-sidebar {
+    width: 268px;
+    background: linear-gradient(170deg, #0f172a 0%, #1e293b 100%);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+}
+
+.sidebar-brand {
+    padding: 28px 24px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-brand h2 {
+    font-family: var(--font-heading, 'Outfit', sans-serif);
+    color: #fff;
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.sidebar-brand h2 span {
+    color: #0d9488;
+}
+
+.sidebar-brand .badge {
+    background: rgba(13, 148, 136, 0.2);
+    color: #5eead4;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+    border: 1px solid rgba(13, 148, 136, 0.3);
+}
+
+.sidebar-menu {
+    list-style: none;
+    margin: 16px 0 0 0;
+    padding: 0 12px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.sidebar-menu li button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 3px 0;
+    text-align: left;
+    padding: 11px 16px;
+    color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.93rem;
+    border-radius: 10px;
+    transition: all 0.25s ease;
+    gap: 0.75rem;
+    letter-spacing: 0.01em;
+}
+
+.sidebar-menu li button:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: rgba(255, 255, 255, 0.9);
+    transform: translateX(3px);
+}
+
+.sidebar-menu li button.active {
+    background: linear-gradient(135deg, rgba(13, 148, 136, 0.4) 0%, rgba(15, 118, 110, 0.3) 100%);
+    color: #5eead4;
+    border: 1px solid rgba(13, 148, 136, 0.3);
+    box-shadow: 0 4px 16px rgba(13, 148, 136, 0.15);
+}
+
+.sidebar-menu .logout-item {
+    padding: 16px 0 20px;
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.sidebar-menu .logout-btn {
+    width: 100%;
+    padding: 11px 16px;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 0.9rem;
+    font-family: inherit;
+    margin: 0;
+}
+
+.sidebar-menu .logout-btn:hover {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+    transform: translateX(3px);
+}
+
+.nav-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+    width: 20px;
+    text-align: center;
+}
+
+/* ── Main ── */
+.dashboard-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    background: #f8fafc;
+}
+
+.dashboard-topbar {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    padding: 20px 36px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dashboard-topbar-left h1 {
+    font-size: 1.6rem;
+    color: #0f172a;
+    margin-bottom: 2px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.dashboard-topbar-left p {
+    color: #64748b;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.dashboard-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0d9488, #d97706);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.dashboard-avatar:hover {
+    transform: scale(1.08);
+}
+
+.dashboard-content {
+    padding: 28px 36px;
+    flex: 1;
+}
+
+.dashboard-panel {
+    background: #fff;
+    border-radius: 18px;
+    padding: 32px;
+    box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    min-height: 500px;
+    animation: fadeUp 0.4s ease backwards;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.panel-header {
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+/* Empty States */
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: #94a3b8;
+}
+
+.empty-state p {
+    font-size: 1rem;
+    margin-bottom: 1.75rem;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1.25rem;
+}
+
+/* Shared panel button utility */
+.btn-sm {
+    padding: 0.45rem 1.1rem !important;
+    font-size: 0.85rem !important;
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+    .dashboard-layout {
+        flex-direction: column;
+    }
+
+    .dashboard-sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        padding: 0 12px;
+        background: #0f172a;
+    }
+
+    .sidebar-brand {
+        padding: 14px 0;
+        border-bottom: none;
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+        padding-right: 18px;
+        margin-right: 8px;
+    }
+
+    .sidebar-menu {
+        margin: 0;
+        display: flex;
+        overflow-x: auto;
+        white-space: nowrap;
+        align-items: center;
+        padding: 0 4px;
+        gap: 2px;
+    }
+
+    .sidebar-menu li button {
+        border-radius: 8px;
+        padding: 10px 14px;
+        margin: 8px 0;
+        display: inline-flex;
+        width: auto;
+        flex-shrink: 0;
+    }
+
+    .sidebar-menu li button.active {
+        background: rgba(13, 148, 136, 0.3);
+        border: 1px solid rgba(13, 148, 136, 0.4);
+    }
+
+    .sidebar-menu .logout-item {
+        border-top: none;
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 0 0 0 12px;
+        margin-left: 8px;
+    }
+
+    .dashboard-topbar,
+    .dashboard-content {
+        padding: 18px;
+    }
+
+    .dashboard-topbar {
+        display: block;
+    }
+}

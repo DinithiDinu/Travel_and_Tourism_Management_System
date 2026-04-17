@@ -1,0 +1,76 @@
+/* ── Shared Legal Pages Styling (Privacy & Terms) ────────── */
+.legal-page-header {
+    padding-top: 160px;
+    padding-bottom: 220px;
+    text-align: center;
+    background-color: #f0fdfa;
+    position: relative;
+}
+
+.legal-page-header .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+}
+
+.legal-page-header .section-subtitle {
+    font-size: 1.05rem;
+    color: #666;
+}
+
+/* ── Content Area ────────────────────────────────────────── */
+.legal-page-content {
+    background: #ffffff;
+    padding: 6rem 0 8rem;
+}
+
+.legal-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* ── Typography & Spacing ────────────────────────────────── */
+.legal-container section {
+    margin-bottom: 3.5rem;
+}
+
+.legal-container h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.legal-container p {
+    font-size: 1.05rem;
+    color: #4a4a4a;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+.legal-container p:last-child {
+    margin-bottom: 0;
+}
+
+.legal-container ul {
+    list-style-type: disc;
+    padding-left: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.legal-container li {
+    font-size: 1.05rem;
+    color: #4a4a4a;
+    line-height: 1.8;
+    margin-bottom: 0.75rem;
+}
+
+.legal-container strong {
+    color: #1a1a1a;
+    font-weight: 600;
+}

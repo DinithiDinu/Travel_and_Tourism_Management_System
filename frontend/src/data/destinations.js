@@ -1,0 +1,47 @@
+export const DESTINATIONS = [
+    {
+        id: 1,
+        image: '/assets/Sigiriya.jpg',
+        alt: 'Sigiriya Rock Fortress',
+        badge: 'Cultural',
+        title: 'Sigiriya',
+        description: 'The ancient rock fortress and palace ruin surrounded by the remains of an extensive network of gardens.',
+        slug: 'sigiriya',
+    },
+    {
+        id: 2,
+        image: '/assets/Ella.jpg',
+        alt: 'Ella Train',
+        badge: 'Nature',
+        title: 'Ella',
+        description: 'A small town in the Badulla District, famous for its tea plantations and the Nine Arch Bridge.',
+        slug: 'ella',
+    },
+    {
+        id: 3,
+        image: '/assets/Mirissa.jpg',
+        alt: 'Mirissa Beach',
+        badge: 'Beach',
+        title: 'Mirissa',
+        description: 'A small town on the south coast, a popular tourist destination for whale watching and surfing.',
+        slug: 'mirissa',
+    },
+    {
+        id: 4,
+        image: '/assets/hiking.jpg',
+        alt: 'Horton Plains',
+        badge: 'Hiking',
+        title: 'Horton Plains',
+        description: "Discover the breathtaking World's End precipice and trek through misty cloud forests rich in biodiversity.",
+        slug: 'horton-plains',
+    },
+    {
+        id: 5,
+        image: '/assets/hikkaduwa.jpg',
+        alt: 'Hikkaduwa Nightlife',
+        badge: 'Party',
+        title: 'Hikkaduwa',
+        description: 'Experience the vibrant nightlife, beach parties, and festivals in the coastal town of Hikkaduwa.',
+        slug: 'hikkaduwa',
+    }
+];

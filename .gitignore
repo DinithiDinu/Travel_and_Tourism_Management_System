@@ -1,0 +1,22 @@
+# ===== Java / Spring Boot =====
+backend/target/
+target/
+*.class
+*.jar
+
+# ===== Config =====
+**/application.properties
+!backend/src/main/resources/application.properties
+!backend/src/main/resources/
+application.yml
+.env
+
+# ===== Node =====
+node_modules/
+
+# ===== Logs =====
+*.log
+
+# ===== IDE =====
+.vscode/
+.idea/
