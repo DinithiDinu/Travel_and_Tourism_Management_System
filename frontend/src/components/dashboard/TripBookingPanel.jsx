@@ -81,7 +81,18 @@ const TripBookingPanel = () => {
         setModal({ mode: 'edit', type: 'trip', item: t });
     };
     const saveTripForm = async (e) => {
-        e.preventDefault(); setSaving(true);
+        e.preventDefault(); 
+        
+        // Form Validations
+        if (!form.title || form.title.trim() === '') return alert('Trip title is required.');
+        if (!form.price || Number(form.price) <= 0) return alert('Price must be a valid amount greater than 0.');
+        if (form.totalSeats && Number(form.totalSeats) <= 0) return alert('Total available seats must be greater than 0.');
+        if (form.startDate && form.endDate && new Date(form.startDate) > new Date(form.endDate)) return alert('Start Date cannot be after End Date.');
+        if (form.discountPercentage && (Number(form.discountPercentage) < 0 || Number(form.discountPercentage) > 100)) return alert('Discount percentage must be between 0 and 100.');
+        if (form.depositAmount && Number(form.depositAmount) > Number(form.price)) return alert('Deposit amount cannot exceed the total price.');
+        if (!form.coverImage || form.coverImage.trim() === '') return alert('Cover image URL is required.');
+
+        setSaving(true);
         try {
             const payload = { ...form };
             if (typeof payload.tags === 'string') {
@@ -130,7 +141,14 @@ const TripBookingPanel = () => {
         setModal({ mode: 'create', type: 'booking' });
     };
     const saveBookingForm = async (e) => {
-        e.preventDefault(); setSaving(true);
+        e.preventDefault(); 
+        
+        // Form Validations
+        if (!form.userId) return alert('User ID is required.');
+        if (!form.tripId) return alert('Please select a trip.');
+        if (!form.numberOfPeople || Number(form.numberOfPeople) < 1) return alert('Number of people must be at least 1.');
+
+        setSaving(true);
         try {
             await api.post('/bookings', form);
             await loadAll(); setModal(null);
