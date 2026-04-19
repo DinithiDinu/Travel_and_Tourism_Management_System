@@ -38,8 +38,6 @@ public class FeedbackService {
         feedback.setTitle(updatedFeedback.getTitle());
         feedback.setComment(updatedFeedback.getComment());
         feedback.setRecommend(updatedFeedback.getRecommend());
-        feedback.setTargetType(updatedFeedback.getTargetType());
-        feedback.setTargetId(updatedFeedback.getTargetId());
 
         return feedbackRepository.save(feedback);
     }

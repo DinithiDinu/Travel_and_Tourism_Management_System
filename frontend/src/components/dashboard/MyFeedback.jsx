@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-function MyFeedback() {
+function MyFeedback({ editFeedbackId }) {
   const [feedbackList, setFeedbackList] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({
@@ -29,6 +29,19 @@ function MyFeedback() {
   useEffect(() => {
     fetchMyFeedback();
   }, []);
+
+  useEffect(() => {
+  if (!editFeedbackId || feedbackList.length === 0) return;
+
+  const feedbackToEdit = feedbackList.find(
+    (item) => item.feedbackId === editFeedbackId
+  );
+
+  if (feedbackToEdit) {
+    
+    startEdit(feedbackToEdit);
+  }
+}, [editFeedbackId, feedbackList]);
 
   const handleDelete = async (feedbackId) => {
     const confirmed = window.confirm("Are you sure you want to delete this feedback?");

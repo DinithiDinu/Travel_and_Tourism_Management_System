@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 
 function GiveFeedback() {
   const [userName, setUserName] = useState("");
-  const [targetType, setTargetType] = useState("DESTINATION");
+  const [targetType] = useState("TRIP");
   const [targetId, setTargetId] = useState("");
+  const [trips, setTrips] = useState([]);
   const [rating, setRating] = useState(0);
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
@@ -17,6 +18,22 @@ function GiveFeedback() {
     }
   }, []);
 
+  useEffect(() => {
+    fetch("http://localhost:8081/api/bookings/trips")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to load trips");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setTrips(Array.isArray(data) ? data : []);
+      })
+      .catch((err) => {
+        console.error("Error loading trips:", err);
+      });
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -28,8 +45,8 @@ function GiveFeedback() {
       return;
     }
 
-    if (!targetId.trim()) {
-      setError("Please enter a destination or hotel ID.");
+    if (!targetId) {
+      setError("Please select a trip.");
       return;
     }
 
@@ -61,7 +78,7 @@ function GiveFeedback() {
     const feedbackData = {
       userId: Number(userId),
       targetType,
-      targetId,
+      targetId: String(targetId),
       rating,
       title,
       comment,
@@ -85,7 +102,6 @@ function GiveFeedback() {
       alert("Feedback submitted successfully!");
 
       setError("");
-      setTargetType("DESTINATION");
       setTargetId("");
       setRating(0);
       setTitle("");
@@ -117,7 +133,7 @@ function GiveFeedback() {
         }}
       >
         <p style={{ marginBottom: "20px", color: "#667085" }}>
-          Share your travel experience and help other travelers make better decisions.
+          Share your trip experience and help other travelers make better decisions.
         </p>
 
         {error && (
@@ -131,9 +147,28 @@ function GiveFeedback() {
             <label style={{ fontWeight: "600", display: "block", marginBottom: "8px" }}>
               Feedback Type
             </label>
+            <input
+              type="text"
+              value="Trip"
+              disabled
+              style={{
+                width: "100%",
+                padding: "12px",
+                borderRadius: "10px",
+                border: "1px solid #d0d5dd",
+                background: "#f8fafc",
+                color: "#475569",
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: "16px" }}>
+            <label style={{ fontWeight: "600", display: "block", marginBottom: "8px" }}>
+              Select Trip
+            </label>
             <select
-              value={targetType}
-              onChange={(e) => setTargetType(e.target.value)}
+              value={targetId}
+              onChange={(e) => setTargetId(e.target.value)}
               style={{
                 width: "100%",
                 padding: "12px",
@@ -141,28 +176,13 @@ function GiveFeedback() {
                 border: "1px solid #d0d5dd",
               }}
             >
-              <option value="DESTINATION">Destination</option>
-              <option value="HOTEL">Hotel</option>
+              <option value="">Select a trip</option>
+              {trips.map((trip) => (
+                <option key={trip.id} value={trip.id}>
+                  {trip.title}
+                </option>
+              ))}
             </select>
-          </div>
-
-          <div style={{ marginBottom: "16px" }}>
-            <label style={{ fontWeight: "600", display: "block", marginBottom: "8px" }}>
-              Destination / Hotel ID
-            </label>
-            <input
-              type="text"
-              value={targetId}
-              onChange={(e) => setTargetId(e.target.value)}
-              placeholder="Ex: ella or hotel-101"
-              style={{
-                width: "100%",
-                padding: "12px",
-                borderRadius: "10px",
-                border: "1px solid #d0d5dd",
-                outline: "none",
-              }}
-            />
           </div>
 
           <div style={{ marginBottom: "16px" }}>
@@ -255,6 +275,5 @@ function GiveFeedback() {
     </div>
   );
 }
-
 
 export default GiveFeedback;

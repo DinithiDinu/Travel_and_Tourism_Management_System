@@ -35,11 +35,14 @@ const TravelerDestinationDetailsPanel = ({ destinationSlug, onBack }) => {
     }, [destinationSlug]);
 
     useEffect(() => {
-        fetch(`http://localhost:8081/api/feedback/target?targetType=DESTINATION&targetId=${destinationSlug}`)
+
+        if (!trip) return;
+        
+        fetch(`http://localhost:8081/api/feedback/target?targetType=TRIP&targetId=${trip.id}`)
         .then((res) => res.json())
         .then((data) => setReviews(data))
         .catch((err) => console.error("Error fetching reviews:", err));
-    }, [destinationSlug]);
+    }, [trip]);
 
     const handleDeleteReview = async (feedbackId) => {
         const confirmed = window.confirm("Are you sure you want to delete this review?");
@@ -321,10 +324,17 @@ const TravelerDestinationDetailsPanel = ({ destinationSlug, onBack }) => {
                 <h2 style={{ fontSize: '1.8rem', color: '#0f172a', marginBottom: '20px', fontFamily: 'var(--font-heading)' }}>
                     Traveler Reviews
                 </h2>
-                
+
+                /* Average Rating Display */
+                <div style={{ marginBottom: "16px", color: "#475569", fontWeight: "600" }}>
+                {reviews.length > 0
+                   ? `Average Rating: ${averageRating} / 5 (${reviews.length} review${reviews.length > 1 ? "s" : ""})`
+                  : "No ratings yet"}
+                </div>
+
                 {reviews.length === 0 ? (
                     <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '24px', border: '1px solid #e2e8f0', color: '#64748b' }}>
-                        No reviews yet for this destination. Be the first traveler to share your experience!
+                        No reviews yet for this trip. Be the first traveler to share your experience!
                     </div>
                 ) : (
                     <div style={{ display: 'grid', gap: '16px' }}>
@@ -340,7 +350,15 @@ const TravelerDestinationDetailsPanel = ({ destinationSlug, onBack }) => {
                                                 <button type="button" onClick={() => setOpenMenuId(openMenuId === review.feedbackId ? null : review.feedbackId)} style={{ background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', color: '#475569' }}>⋮</button>
                                                 {openMenuId === review.feedbackId && (
                                                     <div style={{ position: 'absolute', top: '34px', right: 0, background: '#fff', border: '1px solid #e5e7eb', borderRadius: '10px', boxShadow: '0 8px 20px rgba(0,0,0,0.08)', minWidth: '150px', zIndex: 10 }}>
-                                                        <button onClick={() => { setOpenMenuId(null); navigate('/dashboard/traveler'); }} style={{ width: '100%', textAlign: 'left', padding: '10px 14px', border: 'none', background: '#fff', cursor: 'pointer' }}>Edit in My Feedback</button>
+                                                        <button onClick={() => {
+                                                                      setOpenMenuId(null);
+                                                                       navigate("/dashboard/traveler", {
+                                                                        state: {
+                                                                         activePanel: "myFeedback",
+                                                                          editFeedbackId: review.feedbackId,
+                                                                        },
+                                                                              });
+                                                                   }} style={{ width: '100%', textAlign: 'left', padding: '10px 14px', border: 'none', background: '#fff', cursor: 'pointer' }}>Edit in My Feedback</button>
                                                         <button onClick={() => handleDeleteReview(review.feedbackId)} style={{ width: '100%', textAlign: 'left', padding: '10px 14px', border: 'none', background: '#fff', cursor: 'pointer', color: '#b91c1c' }}>Delete</button>
                                                     </div>
                                                 )}

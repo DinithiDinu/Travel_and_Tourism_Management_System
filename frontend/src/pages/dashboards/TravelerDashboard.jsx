@@ -39,8 +39,7 @@ const NAV_ITEMS = [
     { id: 'payments', icon: '💳', label: 'Billing & Payments' },
     { id: 'tickets', icon: '🎫', label: 'Support & Complaints' },
     { id: 'myTickets', icon: '📋', label: 'My Tickets' },
-    { id: 'feedback', label: 'Feedback & Reviews' },
-    { id: 'myFeedback', label: 'My Feedback' },
+    { id: 'feedback', icon:'✍🏻', label: 'Feedback & Reviews' },
 ];
 
 const TravelerDashboard = () => {
@@ -58,6 +57,7 @@ const TravelerDashboard = () => {
     const [isCheckoutActive, setIsCheckoutActive] = useState(false);
     const [savedDestinations, setSavedDestinations] = useState([]);
 
+
     useEffect(() => {
         const savedTab = localStorage.getItem("travelerActiveTab");
         if (savedTab) {
@@ -65,6 +65,12 @@ const TravelerDashboard = () => {
         }
     }, [location]);
 
+    useEffect(() => {
+    if (location.state?.activePanel) {
+        setActiveTab(location.state.activePanel);
+        localStorage.setItem("travelerActiveTab", location.state.activePanel);
+    }
+}, [location.state]);
 
     const handleTabChange = (tabId) => {
         setActiveTab(tabId);
@@ -190,7 +196,9 @@ const TravelerDashboard = () => {
                         {activeTab === 'tickets' && <RaiseTicket />}
                         {activeTab === 'myTickets' && <MyTickets />}
                         {activeTab === 'feedback' && <GiveFeedback />}
-                        {activeTab === 'myFeedback' && <MyFeedback />}
+                        {activeTab === "myFeedback" && (
+    <MyFeedback editFeedbackId={location.state?.editFeedbackId} />
+)}
                     </section>
                 </div>
             </main>
