@@ -57,7 +57,7 @@ const DestinationDetailsPage = () => {
 
     return (
         <div style={{ backgroundColor: '#f9fafb', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-            <Navbar badge="Guest" />
+            <Navbar badge="Guest" solid />
 
             {/* Hero Section */}
             <div style={{ position: 'relative', height: '60vh', marginTop: '70px', overflow: 'hidden' }}>

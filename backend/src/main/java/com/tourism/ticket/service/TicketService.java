@@ -17,7 +17,7 @@ public class TicketService {
 
     // create a ticket
     public Ticket createTicket(Ticket ticket) {
-        return ticketRepository.save(ticket);
+        return ticketRepository.save(java.util.Objects.requireNonNull(ticket, "Ticket cannot be null"));
     }
 
     // Get all tickets (admin)
@@ -32,14 +32,16 @@ public class TicketService {
 
     // Update status
     public Ticket updateStatus(Long ticketId, String status) {
-        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
+        if (ticketId == null) throw new IllegalArgumentException("Ticket ID cannot be null");
+        Ticket ticket = ticketRepository.findById(ticketId.longValue()).orElseThrow();
         ticket.setStatus(status);
         return ticketRepository.save(ticket);
     }
 
     // add admin response
     public Ticket addResponse(Long ticketId, String response) {
-        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
+        if (ticketId == null) throw new IllegalArgumentException("Ticket ID cannot be null");
+        Ticket ticket = ticketRepository.findById(ticketId.longValue()).orElseThrow();
         ticket.setAdminResponse(response);
         return ticketRepository.save(ticket);
     }

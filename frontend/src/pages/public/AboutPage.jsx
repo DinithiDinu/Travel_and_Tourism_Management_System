@@ -122,7 +122,7 @@ const AboutPage = () => {
 
     return (
         <div ref={pageRef}>
-            <Navbar badge="Guest" />
+            <Navbar badge="Guest" solid />
 
             {/* Page Header */}
             <header className="about-page-header" style={{ position: 'relative' }}>

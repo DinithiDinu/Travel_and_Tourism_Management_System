@@ -16,7 +16,7 @@ public class FeedbackService {
     }
 
      public Feedback createFeedback(Feedback feedback) {
-        return feedbackRepository.save(feedback);
+        return feedbackRepository.save(java.util.Objects.requireNonNull(feedback, "Feedback cannot be null"));
     }
 
     public List<Feedback> getAllFeedback() {
@@ -32,7 +32,8 @@ public class FeedbackService {
     }
 
      public Feedback updateFeedback(Long feedbackId, Feedback updatedFeedback) {
-        Feedback feedback = feedbackRepository.findById(feedbackId).orElseThrow();
+        if (feedbackId == null) throw new IllegalArgumentException("Feedback ID cannot be null");
+        Feedback feedback = feedbackRepository.findById(feedbackId.longValue()).orElseThrow();
 
         feedback.setRating(updatedFeedback.getRating());
         feedback.setTitle(updatedFeedback.getTitle());
@@ -43,6 +44,8 @@ public class FeedbackService {
     }
 
     public void deleteFeedback(Long feedbackId) {
-        feedbackRepository.deleteById(feedbackId);
+        if (feedbackId != null) {
+            feedbackRepository.deleteById(feedbackId.longValue());
+        }
     }
 }

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import './Navbar.css';
 
-const Navbar = ({ badge }) => {
+const Navbar = ({ badge, solid = false }) => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
 
@@ -17,7 +17,7 @@ const Navbar = ({ badge }) => {
 
     return (
         <div className="nav-wrapper">
-            <nav className={`navbar${scrolled ? ' scrolled' : ''}`} id="navbar">
+            <nav className={`navbar${(scrolled || solid) ? ' scrolled' : ''}`} id="navbar">
 
                 {/* Logo */}
                 <div className="nav-left">

@@ -226,7 +226,7 @@ const PerspectiveCarousel = () => {
 /* ─── Page ──────────────────────────────────────────────── */
 const DestinationsPage = () => (
     <div>
-        <Navbar badge="Guest" />
+        <Navbar badge="Guest" solid />
 
         <div className="page-header" style={{ position: 'relative' }}>
             <div className="container">

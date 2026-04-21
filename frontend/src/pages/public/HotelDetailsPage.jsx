@@ -35,7 +35,7 @@ const HotelDetailsPage = () => {
 
     return (
         <div style={{ backgroundColor: '#f1f5f9', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-            <Navbar badge="Guest" />
+            <Navbar badge="Guest" solid />
 
             {/* Header Content pushed below navbar */}
             <div style={{ paddingTop: '100px', flex: 1 }}>

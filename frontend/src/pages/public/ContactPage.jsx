@@ -53,7 +53,7 @@ const ContactPage = () => {
 
     return (
         <div ref={pageRef}>
-            <Navbar badge="Guest" />
+            <Navbar badge="Guest" solid />
 
             {/* Page Header */}
             <header className="contact-page-header" style={{ position: 'relative' }}>

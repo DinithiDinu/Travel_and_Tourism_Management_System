@@ -46,7 +46,7 @@ public class BookingService {
             throw new RuntimeException("Booking cannot be null");
             
         if (booking.getTotalAmount() == null && booking.getTripId() != null && booking.getNumberOfPeople() != null) {
-            Optional<Trip> tripOpt = tripRepo.findById(booking.getTripId());
+            Optional<Trip> tripOpt = tripRepo.findById(booking.getTripId().longValue());
             if (tripOpt.isPresent() && tripOpt.get().getPrice() != null) {
                 booking.setTotalAmount(booking.getNumberOfPeople() * tripOpt.get().getPrice());
             }

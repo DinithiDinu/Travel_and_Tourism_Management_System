@@ -110,7 +110,7 @@ const GuestHomePage = () => {
 
     return (
         <div ref={pageRef}>
-            <Navbar badge="Guest" />
+            <Navbar badge="Guest" solid />
 
             {/* ── HERO ── */}
             <header className="hero" id="home">
