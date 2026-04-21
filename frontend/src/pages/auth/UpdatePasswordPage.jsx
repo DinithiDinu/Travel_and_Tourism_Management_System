@@ -1,30 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Navbar from '../../components/layout/Navbar';
-import Footer from '../../components/layout/Footer';
-import TopWave from '../../components/layout/TopWave';
 import './Auth.css';
 
-function useScrollReveal() {
-    const ref = useRef(null);
-    useEffect(() => {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((e) => {
-                if (e.isIntersecting) {
-                    e.target.classList.add('revealed');
-                    observer.unobserve(e.target);
-                }
-            });
-        }, { threshold: 0.1 });
-        const els = ref.current?.querySelectorAll('.reveal');
-        els?.forEach((el) => observer.observe(el));
-        return () => observer.disconnect();
-    }, []);
-    return ref;
-}
-
 const UpdatePasswordPage = () => {
-    const pageRef = useScrollReveal();
     const navigate = useNavigate();
     const [form, setForm] = useState({ password: '', confirmPassword: '' });
     const [status, setStatus] = useState('idle');
@@ -40,32 +18,45 @@ const UpdatePasswordPage = () => {
     };
 
     return (
-        <div ref={pageRef} className="auth-page">
-            <Navbar badge="Guest" />
-
-            <header className="auth-header section">
-                <div className="container">
-                    <h1 className="section-title">Set New Password</h1>
-                    <p className="section-subtitle">Please securely store your new password.</p>
+        <div className="auth-page">
+            {/* Left Photo Panel */}
+            <div className="auth-photo-panel">
+                <img src="/assets/Ella.jpg" alt="Ella, Sri Lanka" />
+                <div className="auth-photo-overlay" />
+                <div className="auth-photo-content">
+                    <Link to="/" className="auth-photo-logo">SriLanka<span>Travel</span></Link>
+                    <div className="auth-photo-quote">
+                        <p>"Your journey continues safely. A new password is the key to new adventures."</p>
+                        <cite>— SriLanka Travel Security</cite>
+                    </div>
                 </div>
-                <div className="wave-container">
-                    <TopWave />
-                </div>
-            </header>
+            </div>
 
-            <section className="auth-section section">
-                <div className="container">
-                    <div className="auth-card reveal">
-                        {status === 'updated' ? (
-                            <div className="success-message" style={{ textAlign: 'center' }}>
-                                <div className="success-icon" style={{ fontSize: '3rem', color: '#10b981', marginBottom: '1rem' }}>✓</div>
-                                <h2>Password Updated!</h2>
-                                <p>Your password has been successfully reset.</p>
-                                <button className="btn-submit" onClick={() => navigate('/signin')} style={{ display: 'block', textDecoration: 'none', marginTop: '20px' }}>
-                                    Go to Sign In
-                                </button>
+            {/* Right Form Panel */}
+            <div className="auth-form-panel">
+                <div className="auth-form-inner">
+                    <Link to="/" style={{ display: 'inline-block', marginBottom: '2rem', color: '#0f766e', textDecoration: 'none', fontWeight: 600 }}>
+                        &larr; Back to Home
+                    </Link>
+                    
+                    {status === 'updated' ? (
+                        <div className="success-message" style={{ textAlign: 'center', padding: '2rem 0' }}>
+                            <div className="success-icon" style={{ fontSize: '3.5rem', color: '#10b981', marginBottom: '1.5rem' }}>✓</div>
+                            <h2 style={{ fontSize: '1.8rem', margin: '0 0 0.75rem 0' }}>Password Updated!</h2>
+                            <p style={{ color: '#64748b', marginBottom: '2.5rem', lineHeight: '1.7' }}>
+                                Your password has been successfully reset.
+                            </p>
+                            <button className="btn-submit" onClick={() => navigate('/signin')} style={{ display: 'block', textDecoration: 'none', width: '100%', marginBottom: '1rem' }}>
+                                Go to Sign In →
+                            </button>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="auth-form-header">
+                                <h1>Set New Password 🔐</h1>
+                                <p>Please securely store your new password.</p>
                             </div>
-                        ) : (
+
                             <form onSubmit={handleSubmit} noValidate>
                                 <div className="form-group">
                                     <label htmlFor="password">New Password</label>
@@ -100,16 +91,16 @@ const UpdatePasswordPage = () => {
                                     className="btn-submit"
                                     disabled={status === 'updating'}
                                 >
-                                    {status === 'updating' ? 'Updating...' : 'Update Password'}
+                                    {status === 'updating' ? 'Updating...' : 'Update Password →'}
                                 </button>
                             </form>
-                        )}
-
-                    </div>
+                            <div className="auth-footer">
+                                <p>Remembered your password? <Link to="/signin" className="auth-link">Sign In</Link></p>
+                            </div>
+                        </>
+                    )}
                 </div>
-            </section>
-
-            <Footer />
+            </div>
         </div>
     );
 };

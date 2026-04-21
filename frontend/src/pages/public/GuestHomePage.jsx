@@ -186,10 +186,6 @@ const GuestHomePage = () => {
                     <div className="why-us-inner">
                         <div className="why-us-photo reveal">
                             <img src="/assets/Ella.jpg" alt="Ella Train Bridge" />
-                            <div className="why-us-badge-float">
-                                <span className="wub-top">⭐ 4.9 / 5</span>
-                                <span className="wub-bottom">Avg. rating</span>
-                            </div>
                         </div>
                         <div className="why-us-text">
                             <span className="section-label">Why SriLanka Travel</span>
@@ -225,7 +221,6 @@ const GuestHomePage = () => {
                         {SERVICES.map((svc, i) => (
                             <article key={svc.id} className="service-card reveal" style={{ transitionDelay: `${i * 0.12}s` }}>
                                 <div className="service-icon-wrap">{svc.icon}</div>
-                                <span className={`service-badge ${svc.badgeClass}`}>{svc.badgeLabel}</span>
                                 <h3 className="service-title">{svc.title}</h3>
                                 <p className="service-description">{svc.description}</p>
                                 <Link to="/contact" className="service-link">
@@ -269,7 +264,7 @@ const GuestHomePage = () => {
                 <div className="container faq-container">
                     <div className="section-header">
                         <span className="section-label">Have Questions?</span>
-                        <h2 className="section-title">Frequently <em>Asked</em></h2>
+                        <h2 className="section-title">Frequently Asked <em>Questions</em></h2>
                     </div>
                     <div className="faq-list">
                         {FAQS.map((faq) => (
@@ -279,19 +274,7 @@ const GuestHomePage = () => {
                 </div>
             </section>
 
-            {/* ── CTA STRIP ── */}
-            <section className="cta-strip">
-                <div className="container cta-strip-inner">
-                    <div>
-                        <h2>Ready to start your Sri Lanka adventure?</h2>
-                        <p>Join thousands of happy travelers. Book your trip today.</p>
-                    </div>
-                    <div className="cta-strip-buttons">
-                        <Link to="/signup" className="btn btn-gold btn-lg">Get Started Free</Link>
-                        <Link to="/destinations" className="btn btn-outline btn-lg">Browse Destinations</Link>
-                    </div>
-                </div>
-            </section>
+
 
             <Footer />
         </div>

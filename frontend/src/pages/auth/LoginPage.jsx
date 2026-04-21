@@ -62,6 +62,9 @@ const LoginPage = () => {
             {/* Right Form Panel */}
             <div className="auth-form-panel">
                 <div className="auth-form-inner">
+                    <Link to="/" style={{ display: 'inline-block', marginBottom: '2rem', color: '#0f766e', textDecoration: 'none', fontWeight: 600 }}>
+                        &larr; Back to Home
+                    </Link>
                     <div className="auth-form-header">
                         <h1>Welcome Back 👋</h1>
                         <p>Sign in to manage your bookings and explore more.</p>
