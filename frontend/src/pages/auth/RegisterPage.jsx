@@ -10,6 +10,9 @@ const RegisterPage = () => {
     const [status, setStatus] = useState('idle');
     const [error, setError] = useState('');
 
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
     const handleChange = (e) => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
     const handleSubmit = async (e) => {
@@ -48,7 +51,7 @@ const RegisterPage = () => {
 
             navigate(roleRoutes[data.role] || '/dashboard/traveler');
         } catch (err) {
-            setError(err.message);
+            setError(err.message === 'Failed to fetch' ? 'Load failed: Backend server is not running.' : err.message);
             setStatus('idle');
         }
     };
@@ -92,13 +95,25 @@ const RegisterPage = () => {
                         </div>
                         <div className="form-group">
                             <label htmlFor="password">Password</label>
-                            <input type="password" id="password" name="password" placeholder="••••••••"
-                                value={form.password} onChange={handleChange} required disabled={status === 'sending'} />
+                            <div className="password-input-wrapper">
+                                <input type={showPassword ? 'text' : 'password'} id="password" name="password" placeholder="••••••••"
+                                    value={form.password} onChange={handleChange} required disabled={status === 'sending'} 
+                                    style={{ paddingRight: '3.5rem' }} />
+                                <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)} title={showPassword ? "Hide password" : "Show password"}>
+                                    {showPassword ? 'Hide' : 'Show'}
+                                </button>
+                            </div>
                         </div>
                         <div className="form-group">
                             <label htmlFor="confirmPassword">Confirm Password</label>
-                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••"
-                                value={form.confirmPassword} onChange={handleChange} required disabled={status === 'sending'} />
+                            <div className="password-input-wrapper">
+                                <input type={showConfirmPassword ? 'text' : 'password'} id="confirmPassword" name="confirmPassword" placeholder="••••••••"
+                                    value={form.confirmPassword} onChange={handleChange} required disabled={status === 'sending'} 
+                                    style={{ paddingRight: '3.5rem' }} />
+                                <button type="button" className="password-toggle" onClick={() => setShowConfirmPassword(!showConfirmPassword)} title={showConfirmPassword ? "Hide password" : "Show password"}>
+                                    {showConfirmPassword ? 'Hide' : 'Show'}
+                                </button>
+                            </div>
                         </div>
                         {error && <p style={{ color: '#e53e3e', marginBottom: '0.75rem', fontSize: '0.875rem' }}>{error}</p>}
                         <button type="submit" className="btn-submit" disabled={status === 'sending'}>

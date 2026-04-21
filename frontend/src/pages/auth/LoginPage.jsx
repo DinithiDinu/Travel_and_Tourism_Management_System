@@ -10,6 +10,8 @@ const LoginPage = () => {
     const [status, setStatus] = useState('idle');
     const [error, setError] = useState('');
 
+    const [showPassword, setShowPassword] = useState(false);
+
     const handleChange = (e) => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
     const handleSubmit = async (e) => {
@@ -39,7 +41,7 @@ const LoginPage = () => {
             
             navigate(roleRoutes[data.role] || '/dashboard/traveler');
         } catch (err) {
-            setError(err.message);
+            setError(err.message === 'Failed to fetch' ? 'Load failed: Backend server is not running.' : err.message);
             setStatus('idle');
         }
     };
@@ -88,8 +90,14 @@ const LoginPage = () => {
                         </div>
                         <div className="form-group">
                             <label htmlFor="password">Password</label>
-                            <input type="password" id="password" name="password" placeholder="••••••••"
-                                value={form.password} onChange={handleChange} required disabled={status === 'sending'} />
+                            <div className="password-input-wrapper">
+                                <input type={showPassword ? 'text' : 'password'} id="password" name="password" placeholder="••••••••"
+                                    value={form.password} onChange={handleChange} required disabled={status === 'sending'} 
+                                    style={{ paddingRight: '3.5rem' }} />
+                                <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)} title={showPassword ? "Hide password" : "Show password"}>
+                                    {showPassword ? 'Hide' : 'Show'}
+                                </button>
+                            </div>
                         </div>
                         <div className="form-actions">
                             <Link to="/forgot-password" className="forgot-link">Forgot password?</Link>

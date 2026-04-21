@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api';
 
-const TravelerDestinationDetailsPanel = ({ destinationSlug, onBack }) => {
+const TravelerDestinationDetailsPanel = ({ destinationSlug, onBack, onBookTripSuccess }) => {
     const [trip, setTrip] = useState(null);
     const [loading, setLoading] = useState(true);
     const [reviews, setReviews] = useState([]);
@@ -69,22 +69,28 @@ const TravelerDestinationDetailsPanel = ({ destinationSlug, onBack }) => {
         
         setBooking(true);
         try {
-            // Using a simple algorithm for children if your backend supports it, otherwise default to base price
             const adultTotal = adults * (trip.price || 0);
             const childTotal = childrenCount * (trip.childPrice ? trip.childPrice : (trip.price * 0.5 || 0));
             const calculatedTotal = adultTotal + childTotal;
             
-            await api.post('/bookings', {
+            const response = await api.post('/bookings', {
                 userId: loggedInUserId,
                 tripId: trip.id,
                 numberOfPeople: adults + childrenCount,
                 totalAmount: calculatedTotal,
                 specialRequests: `Date Selected: ${bookingDate}\nAdults: ${adults}, Children: ${childrenCount}`
             });
-            alert('Trip booked successfully! You can view the status in the My Bookings tab.');
-            onBack();
+            
+            // Trigger the checkout flow in the parent dashboard
+            console.log("Booking created successfully:", response);
+            if (onBookTripSuccess) {
+                onBookTripSuccess(response.bookingId || response.id);
+            } else {
+                console.warn("onBookTripSuccess prop not provided to DestinationDetailsPanel");
+            }
         } catch (e) {
-            alert('Failed to book trip: ' + e.message);
+            console.error("Booking error:", e);
+            alert('Failed to initiate booking: ' + e.message);
         } finally {
             setBooking(false);
         }
@@ -250,14 +256,12 @@ const TravelerDestinationDetailsPanel = ({ destinationSlug, onBack }) => {
                                         </div>
                                     </div>
                                     
-                                    {trip.price && (
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '20px 0', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '12px' }}>
                                             <span style={{ fontSize: '1.1rem', color: '#334155' }}>Total Request Value</span>
                                             <span style={{ fontSize: '1.3rem', fontWeight: 'bold', color: '#0f172a' }}>
-                                                ${finalTotal.toLocaleString()}
+                                                LKR {finalTotal.toLocaleString()}
                                             </span>
                                         </div>
-                                    )}
                                     
                                     <button
                                         onClick={handleBookTripSubmit}

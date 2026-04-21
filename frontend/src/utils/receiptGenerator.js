@@ -86,13 +86,13 @@ export const generateAndDownloadReceipt = (transactionData) => {
         subItems.forEach(item => {
             tableBody.push([
                 item.label,
-                `$${parseFloat(item.amount).toFixed(2)}`
+                `LKR ${parseFloat(item.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`
             ]);
         });
     } else {
         tableBody.push([
             description,
-            `$${parseFloat(amount).toFixed(2)}`
+            `LKR ${parseFloat(amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`
         ]);
         tableBody.push([
             { content: 'Thank you for your booking!', styles: { textColor: [100, 116, 139], fontStyle: 'italic', fontSize: 9 } },
@@ -143,7 +143,7 @@ export const generateAndDownloadReceipt = (transactionData) => {
     doc.text("Subtotal:", 140, finalY + 15);
 
     doc.setTextColor(...textColor);
-    doc.text(`$${parseFloat(amount).toFixed(2)}`, 196, finalY + 15, { align: "right" });
+    doc.text(`LKR ${parseFloat(amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`, 196, finalY + 15, { align: "right" });
 
     // Total Paid Row
     doc.setDrawColor(226, 232, 240);
@@ -154,7 +154,7 @@ export const generateAndDownloadReceipt = (transactionData) => {
     doc.setFont("helvetica", "bold");
     doc.setTextColor(...primaryColor);
     doc.text("Total Paid", 14, finalY + 32);
-    doc.text(`$${parseFloat(amount).toFixed(2)}`, 196, finalY + 32, { align: "right" });
+    doc.text(`LKR ${parseFloat(amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`, 196, finalY + 32, { align: "right" });
 
     // Footer
     const pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();

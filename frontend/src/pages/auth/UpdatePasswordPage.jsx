@@ -7,6 +7,9 @@ const UpdatePasswordPage = () => {
     const [form, setForm] = useState({ password: '', confirmPassword: '' });
     const [status, setStatus] = useState('idle');
 
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
     const handleChange = (e) => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
     const handleSubmit = async (e) => {
@@ -60,30 +63,42 @@ const UpdatePasswordPage = () => {
                             <form onSubmit={handleSubmit} noValidate>
                                 <div className="form-group">
                                     <label htmlFor="password">New Password</label>
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        name="password"
-                                        placeholder="••••••••"
-                                        value={form.password}
-                                        onChange={handleChange}
-                                        required
-                                        disabled={status === 'updating'}
-                                    />
+                                    <div className="password-input-wrapper">
+                                        <input
+                                            type={showPassword ? 'text' : 'password'}
+                                            id="password"
+                                            name="password"
+                                            placeholder="••••••••"
+                                            value={form.password}
+                                            onChange={handleChange}
+                                            required
+                                            disabled={status === 'updating'}
+                                            style={{ paddingRight: '3.5rem' }}
+                                        />
+                                        <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)} title={showPassword ? "Hide password" : "Show password"}>
+                                            {showPassword ? 'Hide' : 'Show'}
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <div className="form-group">
                                     <label htmlFor="confirmPassword">Confirm New Password</label>
-                                    <input
-                                        type="password"
-                                        id="confirmPassword"
-                                        name="confirmPassword"
-                                        placeholder="••••••••"
-                                        value={form.confirmPassword}
-                                        onChange={handleChange}
-                                        required
-                                        disabled={status === 'updating'}
-                                    />
+                                    <div className="password-input-wrapper">
+                                        <input
+                                            type={showConfirmPassword ? 'text' : 'password'}
+                                            id="confirmPassword"
+                                            name="confirmPassword"
+                                            placeholder="••••••••"
+                                            value={form.confirmPassword}
+                                            onChange={handleChange}
+                                            required
+                                            disabled={status === 'updating'}
+                                            style={{ paddingRight: '3.5rem' }}
+                                        />
+                                        <button type="button" className="password-toggle" onClick={() => setShowConfirmPassword(!showConfirmPassword)} title={showConfirmPassword ? "Hide password" : "Show password"}>
+                                            {showConfirmPassword ? 'Hide' : 'Show'}
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <button

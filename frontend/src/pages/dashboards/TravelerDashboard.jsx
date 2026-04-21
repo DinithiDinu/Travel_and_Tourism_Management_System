@@ -94,6 +94,7 @@ const TravelerDashboard = () => {
     const handlePayBooking = (bookingId) => {
         setSelectedBookingForCheckout(bookingId);
         setIsCheckoutActive(true);
+        setActiveTab('bookings'); // Switch to bookings tab where the checkout panel is handled
     };
 
     const handleToggleSave = (slug) => {
@@ -166,12 +167,23 @@ const TravelerDashboard = () => {
 
                         {activeTab === 'destinations' && (
                             <div>
-                                {isCheckoutActive && selectedHotel ? (
+                                {isCheckoutActive && selectedBookingForCheckout ? (
+                                    <TravelerCheckoutPanel 
+                                        bookingId={selectedBookingForCheckout} 
+                                        onBack={() => {setIsCheckoutActive(false); setSelectedBookingForCheckout(null);}} 
+                                        onCheckoutComplete={handleCheckoutComplete} 
+                                    />
+                                ) : isCheckoutActive && selectedHotel ? (
                                     <TravelerCheckoutPanel hotelId={selectedHotel} onBack={() => setIsCheckoutActive(false)} onCheckoutComplete={handleCheckoutComplete} />
                                 ) : selectedHotel ? (
                                     <TravelerHotelDetailsPanel hotelId={selectedHotel} onBack={() => setSelectedHotel(null)} onBookNow={() => setIsCheckoutActive(true)} />
                                 ) : selectedDestination ? (
-                                    <TravelerDestinationDetailsPanel destinationSlug={selectedDestination} onBack={() => setSelectedDestination(null)} onHotelSelect={(hotelId) => setSelectedHotel(hotelId)} />
+                                    <TravelerDestinationDetailsPanel 
+                                        destinationSlug={selectedDestination} 
+                                        onBack={() => setSelectedDestination(null)} 
+                                        onHotelSelect={(hotelId) => setSelectedHotel(hotelId)} 
+                                        onBookTripSuccess={handlePayBooking}
+                                    />
                                 ) : (
                                     <TravelerDestinationsPanel onExplore={(slug) => setSelectedDestination(slug)} savedDestinations={savedDestinations} onToggleSave={handleToggleSave} />
                                 )}

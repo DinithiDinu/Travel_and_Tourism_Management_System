@@ -120,7 +120,7 @@ const TravelerCheckoutPanel = ({ hotelId, bookingId, onBack, onCheckoutComplete 
             if (selectedCardId === 'new') {
                 if (!cardDetails.name.trim()) newErrors.name = "Name is required";
                 const cleanNumber = cardDetails.number.replace(/\D/g, '');
-                if (cleanNumber.length < 15 || cleanNumber.length > 16) newErrors.number = "Must be 15-16 digits";
+                if (cleanNumber.length !== 16) newErrors.number = "Must be 16 digits";
 
                 const expiryRegex = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/;
                 if (!expiryRegex.test(cardDetails.expiry)) {
@@ -311,7 +311,7 @@ const TravelerCheckoutPanel = ({ hotelId, bookingId, onBack, onCheckoutComplete 
                                                 </div>
                                                 <div className="form-group" style={{ marginTop: '15px' }}>
                                                     <label style={{ fontSize: '0.85rem', color: '#64748b' }}>Card Number</label>
-                                                    <input type="text" placeholder="0000 0000 0000 0000" maxLength="19" value={cardDetails.number} onChange={e => { setCardDetails({ ...cardDetails, number: e.target.value }); setErrors({ ...errors, number: '' }) }} style={{ width: '100%', padding: '12px', border: errors.number ? '1px solid #ef4444' : '1px solid #cbd5e1', borderRadius: '8px', marginTop: '5px', outline: 'none' }} />
+                                                    <input type="text" placeholder="0000 0000 0000 0000" maxLength="16" value={cardDetails.number} onChange={e => { setCardDetails({ ...cardDetails, number: e.target.value }); setErrors({ ...errors, number: '' }) }} style={{ width: '100%', padding: '12px', border: errors.number ? '1px solid #ef4444' : '1px solid #cbd5e1', borderRadius: '8px', marginTop: '5px', outline: 'none' }} />
                                                     {errors.number && <span style={{ color: '#ef4444', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>{errors.number}</span>}
                                                 </div>
                                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginTop: '15px' }}>
@@ -333,7 +333,7 @@ const TravelerCheckoutPanel = ({ hotelId, bookingId, onBack, onCheckoutComplete 
                             </div>
 
                             <button type="submit" disabled={isProcessing} style={{ display: 'block', width: '100%', textAlign: 'center', backgroundColor: isProcessing ? '#94a3b8' : 'var(--primary, #0f766e)', color: 'white', padding: '16px', border: 'none', borderRadius: '12px', fontSize: '1.1rem', fontWeight: 'bold', cursor: isProcessing ? 'not-allowed' : 'pointer', marginTop: '30px', transition: 'transform 0.2s', boxShadow: '0 4px 12px rgba(0, 137, 123, 0.3)' }} onMouseEnter={(e) => { if (!isProcessing) e.currentTarget.style.transform = 'translateY(-2px)' }} onMouseLeave={(e) => { if (!isProcessing) e.currentTarget.style.transform = 'translateY(0)' }}>
-                                {isProcessing ? 'Processing Payment...' : (usePoints ? `Pay with Points & Complete` : `Confirm & Pay $${FINAL_TOTAL.toFixed(2)}`)}
+                                {isProcessing ? 'Processing Payment...' : (usePoints ? `Pay with Points & Complete` : `Confirm & Pay LKR ${FINAL_TOTAL.toLocaleString()}`)}
                             </button>
 
                             {!usePoints && (
@@ -358,25 +358,25 @@ const TravelerCheckoutPanel = ({ hotelId, bookingId, onBack, onCheckoutComplete 
                             <div style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '15px', marginBottom: '15px' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', color: '#475569', fontSize: '0.95rem' }}>
                                     <span>Base Package Price</span>
-                                    <span>${rawSubtotal.toFixed(2)}</span>
+                                    <span>LKR {rawSubtotal.toLocaleString()}</span>
                                 </div>
                                 {activeDiscount && (
                                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', color: '#059669', fontSize: '0.95rem', fontWeight: '500' }}>
                                         <span>Discount: {activeDiscount.offerName}</span>
-                                        <span>-${discountAmount.toFixed(2)}</span>
+                                        <span>-LKR {discountAmount.toLocaleString()}</span>
                                     </div>
                                 )}
                                 {TAXES_AND_FEES > 0 && (
                                     <div style={{ display: 'flex', justifyContent: 'space-between', color: '#475569', fontSize: '0.95rem' }}>
                                         <span>Taxes & Fees</span>
-                                        <span>${TAXES_AND_FEES.toFixed(2)}</span>
+                                        <span>LKR {TAXES_AND_FEES.toLocaleString()}</span>
                                     </div>
                                 )}
                             </div>
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
                                 <span style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#0f172a' }}>Total</span>
-                                <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: usePoints ? '#94a3b8' : 'var(--primary-color)', textDecoration: usePoints ? 'line-through' : 'none' }}>${TOTAL.toFixed(2)}</span>
+                                <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: usePoints ? '#94a3b8' : 'var(--primary-color)', textDecoration: usePoints ? 'line-through' : 'none' }}>LKR {TOTAL.toLocaleString()}</span>
                             </div>
 
                             {userTier === 'PLATINUM' && (
@@ -412,7 +412,7 @@ const TravelerCheckoutPanel = ({ hotelId, bookingId, onBack, onCheckoutComplete 
                             {usePoints && (
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px', padding: '10px 0', borderTop: '1px solid #e2e8f0' }}>
                                     <span style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#0f172a' }}>Final Charge</span>
-                                    <span style={{ fontSize: '1.3rem', fontWeight: 'bold', color: '#059669' }}>$0.00</span>
+                                    <span style={{ fontSize: '1.3rem', fontWeight: 'bold', color: '#059669' }}>LKR 0.00</span>
                                 </div>
                             )}
 

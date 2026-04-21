@@ -64,8 +64,8 @@ const TravelerPaymentsPanel = () => {
         if (!newCard.name.trim()) newErrors.name = "Name is required";
 
         const cleanNumber = newCard.number.replace(/\D/g, '');
-        if (cleanNumber.length < 15 || cleanNumber.length > 16) {
-            newErrors.number = "Must be 15-16 digits";
+        if (cleanNumber.length !== 16) {
+            newErrors.number = "Must be 16 digits";
         }
 
         const expiryRegex = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/;
@@ -264,7 +264,7 @@ const TravelerPaymentsPanel = () => {
                                 <input
                                     type="text"
                                     placeholder="0000 0000 0000 0000"
-                                    maxLength="19"
+                                    maxLength="16"
                                     value={newCard.number}
                                     onChange={e => { setNewCard({ ...newCard, number: e.target.value }); setErrors({ ...errors, number: '' }) }}
                                     style={{ width: '100%', padding: '10px 12px', border: errors.number ? '1px solid #ef4444' : '1px solid #cbd5e1', borderRadius: '8px', outline: 'none' }}
@@ -410,7 +410,7 @@ const TravelerPaymentsPanel = () => {
                                 <tr key={txn.id} style={{ borderBottom: idx === transactions.length - 1 ? 'none' : '1px solid #f1f5f9' }}>
                                     <td style={{ padding: '16px 24px', color: '#64748b', fontSize: '0.95rem' }}>{txn.date}</td>
                                     <td style={{ padding: '16px 24px', color: '#0f172a', fontSize: '0.95rem', fontWeight: '500' }}>{txn.description}</td>
-                                    <td style={{ padding: '16px 24px', color: '#0f172a', fontSize: '0.95rem', fontFamily: 'monospace' }}>${txn.amount.toFixed(2)}</td>
+                                    <td style={{ padding: '16px 24px', color: '#0f172a', fontSize: '0.95rem', fontFamily: 'monospace' }}>LKR {txn.amount.toLocaleString()}</td>
                                     <td style={{ padding: '16px 24px' }}>
                                         <span style={{
                                             display: 'inline-block',
